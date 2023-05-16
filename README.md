@@ -1,5 +1,8 @@
 Install notes
 ==============
+
+If you are using samba 4 see : https://github.com/sfonteneau/AzureADConnect_Samba4
+
  - apt-get install python3-pip git
  - cd /tmp
  - git https://github.com/sfonteneau/AzureADConnect_Ldap.git
