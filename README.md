@@ -16,7 +16,9 @@ If you are using samba 4 see : https://github.com/sfonteneau/AzureADConnect_Samb
  - mkdir /etc/azureconf/
  - cd /opt/sync-azure
  - cp -f azure.conf.exemple /etc/azureconf/azure.conf
+ - cp -f mapping.json.exemple /etc/azureconf/mapping.json
  - Configure /etc/azureconf/azure.conf
+ - Edit /etc/azureconf/mapping.json if need
 
 You can try like this:
 

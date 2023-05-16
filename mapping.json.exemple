@@ -1,0 +1,31 @@
+{       "user_mapping" : {
+        "userPrincipalName"          : "mail",
+        "onPremisesSamAccountName"   : "uid",
+        "dnsDomainName"              : "sambaDomainName",
+        "displayName"                : "displayName",
+        "givenName"                  : "givenName",
+        "surname"                    : "sn",
+        "commonName"                 : "cn",
+        "physicalDeliveryOfficeName" : "physicalDeliveryOfficeName",
+        "department"                 : "department",
+        "employeeId"                 : "employeeId",
+        "streetAddress"              : "streetAddress",
+        "city"                       : "city",
+        "state"                      : "state",
+        "telephoneNumber"            : "telephoneNumber",
+        "company"                    : "company",
+        "employeeType"               : "employeeType",
+        "facsimileTelephoneNumber"   : "facsimileTelephoneNumber",
+        "mail"                       : "mail",
+        "mobile"                     : "mobile",
+        "title"                      : "title",
+        "proxyAddresses"             : "proxyAddresses",
+        "hashnt"                     : "sambaNTPassword"
+
+        },
+        "group_mapping" : {
+        "onPremisesSamAccountName"   : "cn",
+        "onPremisesDistinguishedName": "cn",
+        "displayName"                : "cn"
+        }
+}

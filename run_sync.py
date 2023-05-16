@@ -13,7 +13,7 @@ if "__file__" in locals():
 
 from libsync import AdConnect,OpenLdapInfo
 
-azureconf='azure.conf'
+azureconf='/etc/azureconf/azure.conf'
 config = configparser.ConfigParser()
 config.read(azureconf)
 
@@ -52,12 +52,16 @@ def run_sync(force=False):
     azure.passwordadmin = config.get('common', 'passwordadmin')
     azure.proxiesconf = config.get('common', 'proxy')
 
+    with open('/etc/azureconf/mapping.json','r') as f:
+        mapping = json.loads(f.read())
+
     smb = OpenLdapInfo(SourceAnchorAttr_user  = config.get('common', 'SourceAnchorAttr_user'),
                        SourceAnchorAttr_group = config.get('common', 'SourceAnchorAttr_group'),
                        server                 = config.get('common', 'server_ldap'),
                        username               = config.get('common', 'user_ldap'),
                        password               = config.get('common', 'password_ldap'),
-                       basedn                 = config.get('common', 'basedn')
+                       basedn                 = config.get('common', 'basedn'),
+                       mapping                = mapping
                        )
 
 

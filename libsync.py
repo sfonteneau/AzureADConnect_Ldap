@@ -81,11 +81,11 @@ class AdConnect():
 
 class OpenLdapInfo():
 
-    def __init__(self,SourceAnchorAttr_user="uidNumber",SourceAnchorAttr_group="gidNumber",server=None, username=None,password=None,basedn=None):
+    def __init__(self,SourceAnchorAttr_user="uidNumber",SourceAnchorAttr_group="gidNumber",server=None, username=None,password=None,basedn=None,mapping={}):
 
         self.conn = Connection(server=server, user=username, password=password.encode('utf-8'), raise_exceptions=True)
         self.conn.bind()
-
+        self.mapping = mapping
         self.basedn = basedn
         self.dict_all_users_samba={}
         self.all_dn={}
@@ -126,37 +126,38 @@ class OpenLdapInfo():
             if not SourceAnchor:
                 continue
 
-            if user["sambaNTPassword"][0]:
-                self.dict_id_hash[SourceAnchor]=user["sambaNTPassword"][0]
+            if user[self.mapping['user_mapping']['hashnt']][0]:
+                self.dict_id_hash[SourceAnchor]=user[self.mapping['user_mapping']['hashnt']][0]
             if 'D' in user["sambaAcctFlags"][0]:
                 enabled = False
             else:
                 enabled = True
+            user_mapping= self.mapping['user_mapping']
             data = {
                        "SourceAnchor"               : SourceAnchor,
                        "accountEnabled"             : enabled,
-                       "userPrincipalName"          : user.entry_attributes_as_dict.get('mail',[''])[0],
-                       "onPremisesSamAccountName"   : user.uid.value,
+                       "userPrincipalName"          : user.entry_attributes_as_dict.get(user_mapping['userPrincipalName'],[''])[0],
+                       "onPremisesSamAccountName"   : user.entry_attributes_as_dict.get(user_mapping['onPremisesSamAccountName'],[''])[0],
                        "onPremisesDistinguishedName": user.entry_dn,
-                       "dnsDomainName"              : user.entry_attributes_as_dict.get('sambaDomainName',[''])[0],
-                       "displayName"                : user.entry_attributes_as_dict.get('displayName',[''])[0],
-                       "givenName"                  : user.entry_attributes_as_dict.get('givenName',[''])[0],
-                       "surname"                    : user.entry_attributes_as_dict.get('sn',[''])[0],
-                       "commonName"                 : user.entry_attributes_as_dict.get('cn',[''])[0],
-                       "physicalDeliveryOfficeName" : user.entry_attributes_as_dict.get("physicalDeliveryOfficeName",[''])[0],
-                       "department"                 : user.entry_attributes_as_dict.get("department",[''])[0],
-                       "employeeId"                 : user.entry_attributes_as_dict.get("employeeId",[''])[0],
-                       "streetAddress"              : user.entry_attributes_as_dict.get("streetAddress",[''])[0],
-                       "city"                       : user.entry_attributes_as_dict.get("city",[''])[0],
-                       "state"                      : user.entry_attributes_as_dict.get("state",[''])[0],
-                       "telephoneNumber"            : user.entry_attributes_as_dict.get("telephoneNumber",[''])[0],
-                       "company"                    : user.entry_attributes_as_dict.get("company",[''])[0],
-                       "employeeType"               : user.entry_attributes_as_dict.get("employeeType",[''])[0],
-                       "facsimileTelephoneNumber"   : user.entry_attributes_as_dict.get("facsimileTelephoneNumber",[''])[0],
-                       "mail"                       : user.entry_attributes_as_dict.get("mail",[''])[0],
-                       "mobile"                     : user.entry_attributes_as_dict.get("mobile",[''])[0],
-                       "title"                      : user.entry_attributes_as_dict.get("title",[''])[0],
-                       "proxyAddresses"             : user.entry_attributes_as_dict.get("proxyAddresses",[]),
+                       "dnsDomainName"              : user.entry_attributes_as_dict.get(user_mapping['dnsDomainName'],[''])[0],
+                       "displayName"                : user.entry_attributes_as_dict.get(user_mapping['displayName'],[''])[0],
+                       "givenName"                  : user.entry_attributes_as_dict.get(user_mapping['givenName'],[''])[0],
+                       "surname"                    : user.entry_attributes_as_dict.get(user_mapping['surname'],[''])[0],
+                       "commonName"                 : user.entry_attributes_as_dict.get(user_mapping['commonName'],[''])[0],
+                       "physicalDeliveryOfficeName" : user.entry_attributes_as_dict.get(user_mapping['physicalDeliveryOfficeName'],[''])[0],
+                       "department"                 : user.entry_attributes_as_dict.get(user_mapping['department'],[''])[0],
+                       "employeeId"                 : user.entry_attributes_as_dict.get(user_mapping['employeeId'],[''])[0],
+                       "streetAddress"              : user.entry_attributes_as_dict.get(user_mapping['streetAddress'],[''])[0],
+                       "city"                       : user.entry_attributes_as_dict.get(user_mapping['city'],[''])[0],
+                       "state"                      : user.entry_attributes_as_dict.get(user_mapping['state'],[''])[0],
+                       "telephoneNumber"            : user.entry_attributes_as_dict.get(user_mapping['telephoneNumber'],[''])[0],
+                       "company"                    : user.entry_attributes_as_dict.get(user_mapping['company'],[''])[0],
+                       "employeeType"               : user.entry_attributes_as_dict.get(user_mapping['employeeType'],[''])[0],
+                       "facsimileTelephoneNumber"   : user.entry_attributes_as_dict.get(user_mapping['facsimileTelephoneNumber'],[''])[0],
+                       "mail"                       : user.entry_attributes_as_dict.get(user_mapping['mail'],[''])[0],
+                       "mobile"                     : user.entry_attributes_as_dict.get(user_mapping['mobile'],[''])[0],
+                       "title"                      : user.entry_attributes_as_dict.get(user_mapping['title'],[''])[0],
+                       "proxyAddresses"             : user.entry_attributes_as_dict.get(user_mapping['proxyAddresses'],[]),
                        "usertype"                   : "User"
 
                    }
@@ -170,12 +171,12 @@ class OpenLdapInfo():
             SourceAnchor = self.return_source_anchor(group,"group")
             if not SourceAnchor:
                 continue
-
+            group_mapping= self.mapping['group_mapping']
             data = {
                            "SourceAnchor"               : SourceAnchor,
-                           "onPremisesSamAccountName"   : group.entry_attributes_as_dict.get("cn",[''])[0],
+                           "onPremisesSamAccountName"   : group.entry_attributes_as_dict.get(group_mapping['onPremisesSamAccountName'],[''])[0],
                            "onPremisesDistinguishedName": group.entry_dn,
-                           "displayName"                : group.entry_attributes_as_dict.get("cn",[''])[0],
+                           "displayName"                : group.entry_attributes_as_dict.get(group_mapping['displayName'],[''])[0],
                            "groupMembers"               : [self.all_dn[m] for m in group.entry_attributes_as_dict.get('memberUid',[]) if m in self.all_dn ],
                            "SecurityEnabled"            : True,
                            "usertype"                   : "Group"
