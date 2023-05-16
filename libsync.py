@@ -172,8 +172,8 @@ class OpenLdapInfo():
             data = {
                            "SourceAnchor"               : SourceAnchor,
                            "onPremisesSamAccountName"   : group.entry_attributes_as_dict.get("cn",[''])[0],
-                           "onPremisesDistinguishedName": str(group["cn"]),
-                           "displayName"                : group.entry_attributes_as_dict.get("sAMAccountName",[''])[0],
+                           "onPremisesDistinguishedName": group.entry_dn,
+                           "displayName"                : group.entry_attributes_as_dict.get("cn",[''])[0],
                            "groupMembers"               : [self.all_dn[m] for m in group.entry_attributes_as_dict.get('memberUid',[]) if m in self.all_dn ],
                            "SecurityEnabled"            : True,
                            "usertype"                   : "Group"
