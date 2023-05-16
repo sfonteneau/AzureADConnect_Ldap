@@ -141,7 +141,7 @@ class OpenLdapInfo():
                        "givenName"                  : user.entry_attributes_as_dict.get('givenName',[''])[0],
                        "surname"                    : user.entry_attributes_as_dict.get('sn',[''])[0],
                        "commonName"                 : user.entry_attributes_as_dict.get('cn',[''])[0],
-                       "physicalDeliveryOfficeName" : user.entry_attributes_as_dict.get("physicalDeliveryOfficeName",[b''])[0].decode('utf-8'),
+                       "physicalDeliveryOfficeName" : user.entry_attributes_as_dict.get("physicalDeliveryOfficeName",[''])[0],
                        "department"                 : user.entry_attributes_as_dict.get("department",[''])[0],
                        "employeeId"                 : user.entry_attributes_as_dict.get("employeeId",[''])[0],
                        "streetAddress"              : user.entry_attributes_as_dict.get("streetAddress",[''])[0],
