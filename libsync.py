@@ -104,9 +104,11 @@ class OpenLdapInfo():
 
         SourceAnchor = entry[SourceAnchorAttr][0]
 
-        return usertype + '_' + str( SourceAnchor)
 
+        if SourceAnchorAttr.lower() in ['uidnumber','gidnumer']:
+            SourceAnchor = usertype + '_' + str( SourceAnchor)
 
+        return str(SourceAnchor)
 
     def generate_all_dict(self):
         self.dict_all_users_samba={}
