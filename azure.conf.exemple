@@ -1,0 +1,24 @@
+[common]
+mailadmin = exemple@domain.com
+passwordadmin = password
+proxy =
+
+;https://learn.microsoft.com/en-us/azure/active-directory/hybrid/plan-connect-design-concepts#sourceanchor
+sourceanchorattr_user  = uidNumber
+sourceanchorattr_group = gidNumber
+
+server_ldap            = 192.168.154.172
+user_ldap              = cn=admin,dc=demo,dc=lan
+password_ldap          = password
+basedn                 = dc=demo,dc=lan
+
+do_delete=True
+
+;https://learn.microsoft.com/en-us/azure/active-directory/hybrid/how-to-connect-password-hash-synchronization
+hash_synchronization=True
+
+; When dry_run is "True", the script will display the actions but will not perform the action
+dry_run=True
+
+; db file, the last data sent is stored there.
+dbpath = /opt/sync-azure/last_send.db
