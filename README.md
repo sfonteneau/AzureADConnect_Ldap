@@ -48,3 +48,11 @@ The default sourceanchor for user and group in azure.conf.exemple is the uidNumb
 If "sourceanchor" changes, it will initiate object deletions and then object recreations. You must therefore choose your sourceanchor well and not change it
 
 A dry_run mode allows you to run the script without making any changes
+
+
+password
+=============
+
+The password sent to azure ad is an "NTLM hash", if you are using an openldap with samba3 schema then that hash is the sambaNTPassword
+
+As far as I know , there is currently no other type of hash supported by microsoft, the other alternative is the plaintext password...

@@ -126,8 +126,10 @@ class OpenLdapInfo():
             if not SourceAnchor:
                 continue
 
-            if user[self.mapping['user_mapping']['hashnt']][0]:
-                self.dict_id_hash[SourceAnchor]=user[self.mapping['user_mapping']['hashnt']][0]
+            if 'hashnt' in self.mapping['user_mapping']:
+                if user.get(self.mapping['user_mapping']['hashnt'],[''])[0]:
+                    self.dict_id_hash[SourceAnchor]=user[self.mapping['user_mapping']['hashnt']][0]
+                    
             if 'D' in user["sambaAcctFlags"][0]:
                 enabled = False
             else:

@@ -137,6 +137,8 @@ def run_sync(force=False):
     #send all_password
     if hash_synchronization:
         for entry in smb.dict_id_hash :
+            if len(smb.dict_id_hash[entry]) != 32:
+                continue
             sha2password= hash_for_data(smb.dict_id_hash[entry])
             last_data =  AzureObject.select(AzureObject.last_sha256_hashnt_send).where(AzureObject.sourceanchor==entry,AzureObject.object_type=='user').first()
             if force or (not last_data) or last_data.last_sha256_hashnt_send != sha2password :
