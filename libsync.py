@@ -118,7 +118,7 @@ class OpenLdapInfo():
         SourceAnchor = entry[SourceAnchorAttr][0]
 
 
-        if SourceAnchorAttr.lower() in ['uidnumber','gidnumer']:
+        if SourceAnchorAttr.lower() in ['uidnumber','gidnumber']:
             SourceAnchor = usertype + '_' + str( SourceAnchor)
 
         return str(SourceAnchor)
@@ -140,7 +140,7 @@ class OpenLdapInfo():
                 continue
 
             if 'hashnt' in self.mapping['user_mapping']:
-                if user.get(self.mapping['user_mapping']['hashnt'],[''])[0]:
+                if user.entry_attributes_as_dict.get(self.mapping['user_mapping']['hashnt'],[''])[0]:
                     self.dict_id_hash[SourceAnchor]=user[self.mapping['user_mapping']['hashnt']][0]
                     
             if 'D' in user["sambaAcctFlags"][0]:

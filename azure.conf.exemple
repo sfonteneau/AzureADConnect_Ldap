@@ -8,6 +8,7 @@ sourceanchorattr_user  = uidNumber
 sourceanchorattr_group = gidNumber
 
 server_ldap             = 192.168.154.172
+port_ldap               = 389
 
 use_ssl_ldap            = False
 verify_cert_ldap        = False
