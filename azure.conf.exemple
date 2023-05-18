@@ -8,9 +8,12 @@ sourceanchorattr_user  = uidNumber
 sourceanchorattr_group = gidNumber
 
 server_ldap            = 192.168.154.172
+use_ssl_ldap           = True
+verify_cert_ldap       = True
+basedn                 = dc=demo,dc=lan
+
 user_ldap              = cn=admin,dc=demo,dc=lan
 password_ldap          = password
-basedn                 = dc=demo,dc=lan
 
 do_delete=True
 

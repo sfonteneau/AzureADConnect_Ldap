@@ -1,10 +1,8 @@
 #!/usr/bin/env python
-import os
-import sys
-import json
-import base64
+import ssl
 import ldap3
-from ldap3 import Server, Connection, Tls
+from ldap3   import Server, Connection, Tls
+from certifi import core
 
 from AADInternals_python.AADInternals import AADInternals
 
@@ -81,9 +79,21 @@ class AdConnect():
 
 class OpenLdapInfo():
 
-    def __init__(self,SourceAnchorAttr_user="uidNumber",SourceAnchorAttr_group="gidNumber",server=None, username=None,password=None,basedn=None,mapping={}):
+    def __init__(self,SourceAnchorAttr_user="uidNumber",SourceAnchorAttr_group="gidNumber",server=None, username=None,password=None,basedn=None,port=None,mapping={},verify_cert=False,use_ssl=True):
 
-        self.conn = Connection(server=server, user=username, password=password.encode('utf-8'), raise_exceptions=True)
+        if verify_cert:
+            ldapssl = ssl.CERT_REQUIRED
+        else:
+            ldapssl = ssl.CERT_NONE
+
+        if use_ssl:
+            ca_certs_file = core.where()
+            tls = Tls(validate=ldapssl, version=ssl.PROTOCOL_TLSv1_2, ca_certs_file=ca_certs_file)            
+            serverobj = Server(server, use_ssl=True , tls=tls  ,port=port)
+        else:
+            serverobj = Server(server, use_ssl=False, tls=False,port=port)
+
+        self.conn = Connection(server=serverobj, user=username, password=password.encode('utf-8'), raise_exceptions=True)
         self.conn.bind()
         self.mapping = mapping
         self.basedn = basedn
