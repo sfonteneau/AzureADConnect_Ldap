@@ -79,7 +79,7 @@ class AdConnect():
 
 class OpenLdapInfo():
 
-    def __init__(self,SourceAnchorAttr_user="uidNumber",SourceAnchorAttr_group="gidNumber",server=None, username=None,password=None,basedn=None,port=None,mapping={},verify_cert=False,use_ssl=True):
+    def __init__(self,SourceAnchorAttr_user="uidNumber",SourceAnchorAttr_group="gidNumber",server=None, username=None,password=None,basedn=None,port=None,mapping={},verify_cert=False,use_ssl=True,path_to_bundle_crt_ldap=None):
 
         if verify_cert:
             ldapssl = ssl.CERT_REQUIRED
@@ -87,7 +87,10 @@ class OpenLdapInfo():
             ldapssl = ssl.CERT_NONE
 
         if use_ssl:
-            ca_certs_file = core.where()
+            if path_to_bundle_crt_ldap == 'lib_python_certifi':
+                ca_certs_file = core.where()
+            else:
+                ca_certs_file = path_to_bundle_crt_ldap
             tls = Tls(validate=ldapssl, version=ssl.PROTOCOL_TLSv1_2, ca_certs_file=ca_certs_file)            
             serverobj = Server(server, use_ssl=True , tls=tls  ,port=port)
         else:

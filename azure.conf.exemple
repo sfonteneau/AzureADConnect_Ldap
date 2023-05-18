@@ -7,13 +7,16 @@ proxy =
 sourceanchorattr_user  = uidNumber
 sourceanchorattr_group = gidNumber
 
-server_ldap            = 192.168.154.172
-use_ssl_ldap           = True
-verify_cert_ldap       = True
-basedn                 = dc=demo,dc=lan
+server_ldap             = 192.168.154.172
 
-user_ldap              = cn=admin,dc=demo,dc=lan
-password_ldap          = password
+use_ssl_ldap            = False
+verify_cert_ldap        = False
+path_to_bundle_crt_ldap = lib_python_certifi
+;for lib_python_certifi  value is  /usr/local/lib/python3.9/dist-packages/certifi/cacert.pem
+
+basedn                  = dc=demo,dc=lan
+user_ldap               = cn=admin,dc=demo,dc=lan
+password_ldap           = password
 
 do_delete=True
 
