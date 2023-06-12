@@ -63,7 +63,16 @@ class AdConnect():
             self.dict_az_user[user["immutable_id"]] = user
 
         self.dict_az_group = {}
-        for group in self.az.list_groups():
+
+        try:
+            list_groups = self.az.list_groups()
+        except Exception as e:
+            if 'Identity synchronization is not yet activated for this company' in str(e):
+                list_groups = []
+            else:
+                raise
+            
+        for group in list_groups:
             if not group['dirSyncEnabled']:
                 continue
             if not group.get('immutable_id'):
