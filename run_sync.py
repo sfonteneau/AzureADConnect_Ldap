@@ -48,8 +48,26 @@ def run_sync(force=False):
 
     azure = AdConnect()
     azure.dry_run = dry_run
-    azure.mailadmin = config.get('common', 'mailadmin')
-    azure.passwordadmin = config.get('common', 'passwordadmin')
+
+
+    if config.has_option('common', 'tenant_id'):
+        azure.tenant_id = config.get('common', 'tenant_id')
+
+    if config.has_option('common', 'mailadmin'):
+        azure.mailadmin = config.get('common', 'mailadmin')
+
+    if config.has_option('common', 'passwordadmin'):
+        azure.passwordadmin = config.get('common', 'passwordadmin')
+
+    if config.has_option('common', 'save_to_cache'):
+        azure.save_to_cache = config.getboolean('common', 'save_to_cache')
+
+    if config.has_option('common', 'use_cache'):
+        azure.use_cache = config.getboolean('common', 'use_cache')  
+
+    if config.has_option('common', 'credential_cache_file'):
+        azure.cache_file = config.get('common', 'credential_cache_file')
+
     azure.proxiesconf = config.get('common', 'proxy')
 
     with open('/etc/azureconf/mapping.json','r') as f:
@@ -71,7 +89,8 @@ def run_sync(force=False):
 
     smb.dry_run = dry_run
 
-
+    if azure.use_cache:
+        azure.connect()
 
     if not AzureObject.table_exists():
         # enable ad sync
