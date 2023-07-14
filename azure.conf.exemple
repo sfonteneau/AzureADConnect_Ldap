@@ -3,6 +3,8 @@ mailadmin = exemple@domain.com
 passwordadmin = password
 proxy =
 
+credential_cache_file = /root/last_token_azuread.json
+
 ;https://learn.microsoft.com/en-us/azure/active-directory/hybrid/plan-connect-design-concepts#sourceanchor
 sourceanchorattr_user  = uidNumber
 sourceanchorattr_group = gidNumber
