@@ -1,6 +1,6 @@
 #!/usr/bin/env python
+import os
 import ssl
-import ldap3
 from ldap3   import Server, Connection, Tls
 from certifi import core
 
