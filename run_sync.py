@@ -68,7 +68,10 @@ def run_sync(force=False):
     if config.has_option('common', 'credential_cache_file'):
         azure.cache_file = config.get('common', 'credential_cache_file')
 
-    azure.proxiesconf = {'http':config.get('common', 'proxy'),'https':config.get('common','proxy')}
+    if config.get('common', 'proxy'):
+        azure.proxiesconf = {'http':config.get('common', 'proxy'),'https':config.get('common','proxy')}
+    else:
+        azure.proxiesconf = {}
 
     with open('/etc/azureconf/mapping.json','r') as f:
         mapping = json.loads(f.read())
