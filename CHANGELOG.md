@@ -1,5 +1,8 @@
 # Changelog
 
+## [2024-05-15]
+- FIX "expireOn" delta calculation, this would generate an expired token error. "expireOn" is not in UTC...
+
 ## [2023-07-06]
 - Multi-factor authentication support. 
   Use the old token to regenerate a new token. The tenant id is now required in conf file
