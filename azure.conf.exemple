@@ -6,8 +6,8 @@ proxy =
 credential_cache_file = /root/last_token_azuread.json
 
 ;https://learn.microsoft.com/en-us/azure/active-directory/hybrid/plan-connect-design-concepts#sourceanchor
-sourceanchorattr_user  = uidNumber
-sourceanchorattr_group = gidNumber
+sourceanchorattr_user  = sambaSID
+sourceanchorattr_group = sambaSID
 
 server_ldap             = 192.168.154.172
 port_ldap               = 389
