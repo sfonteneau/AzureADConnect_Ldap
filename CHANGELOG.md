@@ -1,5 +1,8 @@
 # Changelog
 
+## [2024-07-24]
+- toggle from uidnumber/guidnumber to sambaSID in the example. A guidnumber and guidnumber could be duplicates
+
 ## [2024-05-15]
 - FIX "expireOn" delta calculation, this would generate an expired token error. "expireOn" is not in UTC...
 
