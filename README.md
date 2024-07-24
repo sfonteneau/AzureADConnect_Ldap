@@ -41,7 +41,7 @@ Warning
 sourceanchor
 =============
 
-The default sourceanchor for user and group in azure.conf.exemple is the uidNumber/guidNumber
+The default sourceanchor for user and group in azure.conf.exemple is sambaSID
 
 If "sourceanchor" changes, it will initiate object deletions and then object recreations. You must therefore choose your sourceanchor well and not change it
 
