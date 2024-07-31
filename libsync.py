@@ -131,7 +131,7 @@ class AdConnect():
 
 class OpenLdapInfo():
 
-    def __init__(self,SourceAnchorAttr_user="uidNumber",SourceAnchorAttr_group="gidNumber",server=None, username=None,password=None,basedn=None,port=None,mapping={},verify_cert=False,use_ssl=True,path_to_bundle_crt_ldap=None):
+    def __init__(self,SourceAnchorAttr_user="uidNumber",SourceAnchorAttr_group="gidNumber",server=None, username=None,password=None,basedn=None,port=None,mapping={},verify_cert=False,use_ssl=True,path_to_bundle_crt_ldap=None,sourceanchorattr_user_is_sid=True,sourceanchorattr_group_is_sid=True):
 
         if verify_cert:
             ldapssl = ssl.CERT_REQUIRED
@@ -157,6 +157,8 @@ class OpenLdapInfo():
         self.dict_id_hash = {}
         self.SourceAnchorAttr_user  = SourceAnchorAttr_user
         self.SourceAnchorAttr_group = SourceAnchorAttr_group
+        self.sourceanchorattr_user_is_sid  = sourceanchorattr_user_is_sid
+        self.sourceanchorattr_group_is_sid = sourceanchorattr_group_is_sid        
 
         self.dry_run=True
 
@@ -164,11 +166,14 @@ class OpenLdapInfo():
     def return_source_anchor(self,entry,usertype=None):
         if usertype == 'user':
             SourceAnchorAttr=self.SourceAnchorAttr_user
+            SourceAnchor = entry[SourceAnchorAttr][0]
+            if sourceanchorattr_user_is_sid:
+                SourceAnchor = sid_to_base64(SourceAnchor)
         else:
             SourceAnchorAttr=self.SourceAnchorAttr_group
-
-        SourceAnchor = entry[SourceAnchorAttr][0]
-
+            SourceAnchor = entry[SourceAnchorAttr][0]
+            if sourceanchorattr_group_is_sid:
+                SourceAnchor = sid_to_base64(SourceAnchor)
 
         if SourceAnchorAttr.lower() in ['uidnumber','gidnumber']:
             SourceAnchor = usertype + '_' + str( SourceAnchor)
