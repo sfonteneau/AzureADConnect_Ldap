@@ -9,6 +9,11 @@ credential_cache_file = /root/last_token_azuread.json
 sourceanchorattr_user  = sambaSID
 sourceanchorattr_group = sambaSID
 
+;https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/plan-connect-design-concepts#selecting-a-good-sourceanchor-attribute
+;if the sourceanchor attribute is a sid it is preferable to convert it to base64 encoded binary format to comply with the initial operation of azure ad connect
+sourceanchorattr_user_is_sid = True
+sourceanchorattr_group_is_sid = True
+
 server_ldap             = 192.168.154.172
 port_ldap               = 389
 
