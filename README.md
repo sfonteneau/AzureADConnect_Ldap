@@ -47,6 +47,7 @@ If "sourceanchor" changes, it will initiate object deletions and then object rec
 
 A dry_run mode allows you to run the script without making any changes
 
+You can indicate that the attribute you have chosen is a "sid" with the parameter "sourceanchorattr_user_is_sid" and "sourceanchorattr_group_is_sid" for conform to how Azure Ad Connect windows works (base64 encoding of a binary attribute, sid is binary)
 
 password
 =============
