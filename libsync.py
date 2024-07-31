@@ -1,11 +1,42 @@
 #!/usr/bin/env python
 import os
 import ssl
+import struct
+import base64
 from ldap3   import Server, Connection, Tls
 from certifi import core
 
 from AADInternals_python.AADInternals import AADInternals
 
+def sid_to_base64(sid):
+    # Split the SID into its components
+    parts = sid.split('-')
+    
+    # Validate SID format
+    if not (parts[0] == 'S' and len(parts) > 2):
+        raise ValueError("Invalid SID format")
+    
+    # Parse the identifier authority (last part before the actual sub-authorities)
+    identifier_authority = int(parts[2])
+    
+    # The first sub-authority number is always in the range 0-4294967295
+    # and is represented as an unsigned integer
+    sub_authorities = [int(part) for part in parts[3:]]
+    
+    # Encode the revision (always 1) and sub-authority count (number of sub-authorities)
+    revision_and_subauthority_count = struct.pack('BB', 1, len(sub_authorities))
+    
+    # Encode the identifier authority as a 48-bit (6-byte) value
+    identifier_authority_bytes = struct.pack('>Q', identifier_authority)[-6:]
+    
+    # Encode each sub-authority as a 32-bit (4-byte) value
+    sub_authority_bytes = b''.join(struct.pack('<I', sa) for sa in sub_authorities)
+    
+    # Combine all parts
+    binary_sid = revision_and_subauthority_count + identifier_authority_bytes + sub_authority_bytes
+    
+    # Encode in base64 and return
+    return base64.b64encode(binary_sid).decode('utf-8')
 
 class AdConnect():
 
