@@ -24,7 +24,7 @@ path_to_bundle_crt_ldap = lib_python_certifi
 
 basedn                  = dc=demo,dc=lan
 user_ldap               = cn=admin,dc=demo,dc=lan
-password_ldap           = password
+password_ldap_file      = /root/password_ldap_file
 
 do_delete=True
 
