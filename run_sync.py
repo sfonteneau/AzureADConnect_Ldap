@@ -86,8 +86,8 @@ def run_sync(force=False):
                        use_ssl                       = config.getboolean('common', 'use_ssl_ldap'),
                        verify_cert                   = config.getboolean('common', 'verify_cert_ldap'),
                        mapping                       = mapping,
-                       sourceanchorattr_user_is_sid  = config.getboolean('common', 'sourceanchorattr_user_is_sid')
-                       sourceanchorattr_group_is_sid = config.getboolean('common', 'sourceanchorattr_group_is_sid')
+                       sourceanchorattr_user_is_sid  = config.getboolean('common', 'sourceanchorattr_user_is_sid') if config.has_option('common', 'sourceanchorattr_user_is_sid') else False
+                       sourceanchorattr_group_is_sid = config.getboolean('common', 'sourceanchorattr_group_is_sid') if config.has_option('common', 'sourceanchorattr_group_is_sid') else False
                        )
 
 
