@@ -1,7 +1,9 @@
 # Changelog
 
-## [2024-07-24]
-- toggle from uidnumber/guidnumber to sambaSID in the example. A guidnumber and guidnumber could be duplicates
+## [2024-07-31]
+- toggle from uidnumber/guidnumber to sambaSID in the example. 
+  Added sourceanchorattr_user_is_sid and sourceanchorattr_group_is_sid parameters to conform to how Azure Ad Connect initially works (base64 encoding of a binary attribute, sid is binary)
+  old uidnumber/gidnumber mode is still available
 
 ## [2024-05-15]
 - FIX "expireOn" delta calculation, this would generate an expired token error. "expireOn" is not in UTC...
