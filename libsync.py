@@ -167,12 +167,12 @@ class OpenLdapInfo():
         if usertype == 'user':
             SourceAnchorAttr=self.SourceAnchorAttr_user
             SourceAnchor = entry[SourceAnchorAttr][0]
-            if sourceanchorattr_user_is_sid:
+            if self.sourceanchorattr_user_is_sid:
                 SourceAnchor = sid_to_base64(SourceAnchor)
         else:
             SourceAnchorAttr=self.SourceAnchorAttr_group
             SourceAnchor = entry[SourceAnchorAttr][0]
-            if sourceanchorattr_group_is_sid:
+            if self.sourceanchorattr_group_is_sid:
                 SourceAnchor = sid_to_base64(SourceAnchor)
 
         if SourceAnchorAttr.lower() in ['uidnumber','gidnumber']:
