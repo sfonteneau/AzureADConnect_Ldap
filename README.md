@@ -5,7 +5,7 @@ If you are using samba 4 see : https://github.com/sfonteneau/AzureADConnect_Samb
 
  - apt-get install python3-pip git
  - cd /tmp
- - git https://github.com/sfonteneau/AzureADConnect_Ldap.git
+ - git clone https://github.com/sfonteneau/AzureADConnect_Ldap.git
  - mv AzureADConnect_Ldap /opt/sync-azure
  - cd /opt/sync-azure/
  - pip3 install -r requirements.txt
