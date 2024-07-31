@@ -80,7 +80,7 @@ def run_sync(force=False):
                        SourceAnchorAttr_group        = config.get('common', 'SourceAnchorAttr_group'),
                        server                        = config.get('common', 'server_ldap'),
                        username                      = config.get('common', 'user_ldap'),
-                       password                      = open(config.get('common', 'password_ldap_file')).read().split('\n')[0],
+                       password                      = config.get('common', 'password_ldap', raw=True),
                        port                          = config.getint('common', 'port_ldap'),
                        basedn                        = config.get('common', 'basedn'),
                        use_ssl                       = config.getboolean('common', 'use_ssl_ldap'),
