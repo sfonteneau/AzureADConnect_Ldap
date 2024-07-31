@@ -49,6 +49,8 @@ A dry_run mode allows you to run the script without making any changes
 
 You can indicate that the attribute you have chosen is a "sid" with the parameter "sourceanchorattr_user_is_sid" and "sourceanchorattr_group_is_sid" for conform to how Azure Ad Connect windows works (base64 encoding of a binary attribute, sid is binary)
 
+see: https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/plan-connect-design-concepts#selecting-a-good-sourceanchor-attribute
+
 password
 =============
 
