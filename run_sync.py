@@ -76,16 +76,18 @@ def run_sync(force=False):
     with open('/etc/azureconf/mapping.json','r') as f:
         mapping = json.loads(f.read())
 
-    smb = OpenLdapInfo(SourceAnchorAttr_user  = config.get('common', 'SourceAnchorAttr_user'),
-                       SourceAnchorAttr_group = config.get('common', 'SourceAnchorAttr_group'),
-                       server                 = config.get('common', 'server_ldap'),
-                       username               = config.get('common', 'user_ldap'),
-                       password               = config.get('common', 'password_ldap'),
-                       port                   = config.getint('common', 'port_ldap'),
-                       basedn                 = config.get('common', 'basedn'),
-                       use_ssl                = config.getboolean('common', 'use_ssl_ldap'),
-                       verify_cert            = config.getboolean('common', 'verify_cert_ldap'),
-                       mapping                = mapping
+    smb = OpenLdapInfo(SourceAnchorAttr_user         = config.get('common', 'SourceAnchorAttr_user'),
+                       SourceAnchorAttr_group        = config.get('common', 'SourceAnchorAttr_group'),
+                       server                        = config.get('common', 'server_ldap'),
+                       username                      = config.get('common', 'user_ldap'),
+                       password                      = config.get('common', 'password_ldap'),
+                       port                          = config.getint('common', 'port_ldap'),
+                       basedn                        = config.get('common', 'basedn'),
+                       use_ssl                       = config.getboolean('common', 'use_ssl_ldap'),
+                       verify_cert                   = config.getboolean('common', 'verify_cert_ldap'),
+                       mapping                       = mapping,
+                       sourceanchorattr_user_is_sid  = config.get('common', 'sourceanchorattr_user_is_sid')
+                       sourceanchorattr_group_is_sid = config.get('common', 'sourceanchorattr_group_is_sid')
                        )
 
 
