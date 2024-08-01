@@ -3,23 +3,33 @@ Install notes
 
 If you are using samba 4 see : https://github.com/sfonteneau/AzureADConnect_Samba4
 
- - apt-get install python3-pip git
- - cd /tmp
- - git clone https://github.com/sfonteneau/AzureADConnect_Ldap.git
- - mv AzureADConnect_Ldap /opt/sync-azure
- - cd /opt/sync-azure/
- - pip3 install -r requirements.txt
- - git submodule update --progress --init -- "AADInternals_python"
- - cd /opt/sync-azure/AADInternals_python
- - pip3 install -r requirements.txt
- - git submodule update --progress --init -- "python_wcfbin"
- - mkdir /etc/azureconf/
- - cd /opt/sync-azure
- - cp -f azure.conf.exemple /etc/azureconf/azure.conf
- - cp -f mapping.json.exemple /etc/azureconf/mapping.json
- - Configure /etc/azureconf/azure.conf
- - Edit /etc/azureconf/mapping.json if need
+```
+apt-get install git
+cd /tmp
+git clone https://github.com/sfonteneau/AzureADConnect_Ldap.git
+mv AzureADConnect_Ldap /opt/sync-azure
+cd /opt/sync-azure/
+git submodule update --progress --init -- "AADInternals_python"
+cd /opt/sync-azure/AADInternals_python
+git submodule update --progress --init -- "python_wcfbin"
+mkdir /etc/azureconf/
+cd /opt/sync-azure
+cp -f azure.conf.exemple /etc/azureconf/azure.conf
+cp -f mapping.json.exemple /etc/azureconf/mapping.json
+apt-get install python3-peewee python3-passlib python3-xmltodict python3-requests python3-azure python3-ldap3 -y
+```
 
+
+If you are not under debian or if you do not have the packages available :
+
+```
+apt-get install python3-pip
+pip3 install -r /opt/sync-azure/requirements.txt
+pip3 install -r /opt/sync-azure/AADInternals_python/requirements.txt
+```
+
+ - Configure /etc/azureconf/azure.conf
+   
 You can try like this:
 
 python3 /opt/sync-azure/run_sync.py
