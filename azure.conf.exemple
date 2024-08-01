@@ -34,4 +34,4 @@ hash_synchronization=True
 dry_run=True
 
 ; db file, the last data sent is stored there.
-dbpath = /opt/sync-azure/last_send.db
+dbpath = /root/last_send_azuread.db
