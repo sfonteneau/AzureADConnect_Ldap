@@ -236,20 +236,37 @@ class OpenLdapInfo():
 
 
             self.all_dn[user.uid.value]=SourceAnchor
+            self.all_dn[user.uid.value.split('=',1)[-1]]=SourceAnchor
+            self.all_dn[user.entry_dn]=SourceAnchor
             self.dict_all_users_samba[SourceAnchor] = data
 
         self.conn.search(self.basedn, search_filter="(&(objectClass=posixGroup)(%s=*))" % self.SourceAnchorAttr_group,attributes=ldap3.ALL_ATTRIBUTES)
+        
+        for group in self.conn.entries:
+            SourceAnchor = self.return_source_anchor(group,"group")
+            if not SourceAnchor:
+                continue            
+            self.all_dn[group.entry_dn] = SourceAnchor
+            self.all_dn[group.entry_dn.split(',')[0]] = SourceAnchor
+        
         for group in self.conn.entries:
             SourceAnchor = self.return_source_anchor(group,"group")
             if not SourceAnchor:
                 continue
+                
+            groupMembers = {}
+            for attrgrouptest in ["memberUid","member","uniqueMember"]:
+                for m in group.entry_attributes_as_dict.get(attrgrouptest,[]): 
+                    if m in self.all_dn:
+                        groupMembers[self.all_dn[m]] = None
+            
             group_mapping= self.mapping['group_mapping']
             data = {
                            "SourceAnchor"               : SourceAnchor,
                            "onPremisesSamAccountName"   : group.entry_attributes_as_dict.get(group_mapping['onPremisesSamAccountName'],[''])[0],
                            "onPremisesDistinguishedName": group.entry_dn,
                            "displayName"                : group.entry_attributes_as_dict.get(group_mapping['displayName'],[''])[0],
-                           "groupMembers"               : [self.all_dn[m] for m in group.entry_attributes_as_dict.get('memberUid',[]) if m in self.all_dn ],
+                           "groupMembers"               : list(groupMembers),
                            "SecurityEnabled"            : True,
                            "usertype"                   : "Group"
                        }
