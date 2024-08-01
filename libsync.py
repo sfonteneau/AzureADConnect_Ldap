@@ -3,6 +3,7 @@ import os
 import ssl
 import struct
 import base64
+import ldap3
 from ldap3   import Server, Connection, Tls
 from certifi import core
 
@@ -241,9 +242,9 @@ class OpenLdapInfo():
             self.all_dn[user.entry_dn]=SourceAnchor
             self.dict_all_users_samba[SourceAnchor] = data
             
-            gidnumber = user.entry_attributes_as_dict.get(user_mapping['gidNumber'],[''])[0]
+            gidnumber = user.entry_attributes_as_dict.get('gidNumber',[''])[0]
             if gidnumber:
-                if not gidnumber in dict_guidnumber_sa:
+                if not gidnumber in self.dict_guidnumber_sa:
                     self.dict_guidnumber_sa[gidnumber] = [SourceAnchor]
                 else:
                     self.dict_guidnumber_sa[gidnumber].append(SourceAnchor)
@@ -268,7 +269,7 @@ class OpenLdapInfo():
                     if m in self.all_dn:
                         groupMembers[self.all_dn[m]] = None
 
-            gidnumber = group.entry_attributes_as_dict.get(user_mapping['gidNumber'],[''])[0]
+            gidnumber = group.entry_attributes_as_dict.get('gidNumber',[''])[0]
             if gidnumber:
                 for gi in self.dict_guidnumber_sa.get(gidnumber,[]):
                     groupMembers[gi] = None
@@ -285,4 +286,3 @@ class OpenLdapInfo():
                        }
 
             self.dict_all_group_samba[SourceAnchor] = data
-
