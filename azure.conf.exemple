@@ -1,7 +1,6 @@
 [common]
-mailadmin = exemple@domain.com
-passwordadmin = password
 proxy =
+tenant_id = 6121018c-f311-9999-9999-ec17bba6e422
 
 credential_cache_file = /root/last_token_azuread.json
 
