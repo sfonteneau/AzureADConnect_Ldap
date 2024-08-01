@@ -154,6 +154,7 @@ class OpenLdapInfo():
         self.basedn = basedn
         self.dict_all_users_samba={}
         self.all_dn={}
+        self.dict_guidnumber_sa={}
         self.dict_id_hash = {}
         self.SourceAnchorAttr_user  = SourceAnchorAttr_user
         self.SourceAnchorAttr_group = SourceAnchorAttr_group
@@ -239,6 +240,13 @@ class OpenLdapInfo():
             self.all_dn[user.uid.value.split('=',1)[-1]]=SourceAnchor
             self.all_dn[user.entry_dn]=SourceAnchor
             self.dict_all_users_samba[SourceAnchor] = data
+            
+            gidnumber = user.entry_attributes_as_dict.get(user_mapping['gidNumber'],[''])[0]
+            if gidnumber:
+                if not gidnumber in dict_guidnumber_sa:
+                    self.dict_guidnumber_sa[gidnumber] = [SourceAnchor]
+                else:
+                    self.dict_guidnumber_sa[gidnumber].append(SourceAnchor)
 
         self.conn.search(self.basedn, search_filter="(&(objectClass=posixGroup)(%s=*))" % self.SourceAnchorAttr_group,attributes=ldap3.ALL_ATTRIBUTES)
         
@@ -259,6 +267,11 @@ class OpenLdapInfo():
                 for m in group.entry_attributes_as_dict.get(attrgrouptest,[]): 
                     if m in self.all_dn:
                         groupMembers[self.all_dn[m]] = None
+
+            gidnumber = group.entry_attributes_as_dict.get(user_mapping['gidNumber'],[''])[0]
+            if gidnumber:
+                for gi in self.dict_guidnumber_sa.get(gidnumber,[]):
+                    groupMembers[gi] = None
             
             group_mapping= self.mapping['group_mapping']
             data = {
