@@ -3,8 +3,7 @@ import os
 import ssl
 import struct
 import base64
-import ldap3
-from ldap3   import Server, Connection, Tls
+from ldap3 import Server, Connection, Tls, ALL_ATTRIBUTES
 from certifi import core
 
 from AADInternals_python.AADInternals import AADInternals
@@ -188,7 +187,7 @@ class OpenLdapInfo():
         self.all_dn={}
         self.dict_id_hash = {}
         # Search all users
-        self.conn.search(self.basedn, search_filter="(&(objectClass=posixAccount)(%s=*))" % self.SourceAnchorAttr_user,attributes=ldap3.ALL_ATTRIBUTES)
+        self.conn.search(self.basedn, search_filter="(&(objectClass=posixAccount)(%s=*))" % self.SourceAnchorAttr_user,attributes=ALL_ATTRIBUTES)
         for user in self.conn.entries:
 
             if user.uid.value.endswith('$'):
