@@ -248,7 +248,7 @@ class OpenLdapInfo():
                 else:
                     self.dict_guidnumber_sa[gidnumber].append(SourceAnchor)
 
-        self.conn.search(self.basedn, search_filter="(&(objectClass=posixGroup)(%s=*))" % self.SourceAnchorAttr_group,attributes=ldap3.ALL_ATTRIBUTES)
+        self.conn.search(self.basedn, search_filter="(&(objectClass=posixGroup)(%s=*))" % self.SourceAnchorAttr_group,attributes=ALL_ATTRIBUTES)
         
         for group in self.conn.entries:
             SourceAnchor = self.return_source_anchor(group,"group")
