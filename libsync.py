@@ -3,10 +3,18 @@ import os
 import ssl
 import struct
 import base64
+import logging
+import json
+import datetime
 from ldap3 import Server, Connection, Tls, ALL_ATTRIBUTES
 from certifi import core
-
 from AADInternals_python.AADInternals import AADInternals
+
+logging.getLogger("adal-python").setLevel(logging.WARN)
+logger = logging.getLogger()
+
+def write_log_json_data(action,data):
+    logger.info(json.dumps({'type':action,'timestamp': str(datetime.datetime.utcnow()),'data':data}))
 
 def sid_to_base64(sid):
     # Split the SID into its components
@@ -189,7 +197,6 @@ class OpenLdapInfo():
         # Search all users
         self.conn.search(self.basedn, search_filter="(&(objectClass=posixAccount)(%s=*))" % self.SourceAnchorAttr_user,attributes=ALL_ATTRIBUTES)
         for user in self.conn.entries:
-
             if user.uid.value.endswith('$'):
                 continue
 
