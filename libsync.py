@@ -9,6 +9,7 @@ import datetime
 from ldap3 import Server, Connection, Tls, ALL_ATTRIBUTES
 from certifi import core
 from AADInternals_python.AADInternals import AADInternals
+from passlib.hash import nthash
 
 logging.getLogger("adal-python").setLevel(logging.WARN)
 logger = logging.getLogger()
@@ -139,7 +140,7 @@ class AdConnect():
 
 class OpenLdapInfo():
 
-    def __init__(self,SourceAnchorAttr_user="uidNumber",SourceAnchorAttr_group="gidNumber",server=None, username=None,password=None,basedn_user=None,basedn_group=None,filter_user=None,filter_group=None,port=None,mapping={},verify_cert=False,use_ssl=True,path_to_bundle_crt_ldap=None,sourceanchorattr_user_is_sid=True,sourceanchorattr_group_is_sid=True):
+    def __init__(self,SourceAnchorAttr_user="uidNumber",SourceAnchorAttr_group="gidNumber",server=None, username=None,password=None,basedn_user=None,basedn_group=None,filter_user=None,filter_group=None,port=None,mapping={},verify_cert=False,use_ssl=True,path_to_bundle_crt_ldap=None,sourceanchorattr_user_is_sid=True,sourceanchorattr_group_is_sid=True,use_novell_get_universal_password=False):
 
         if verify_cert:
             ldapssl = ssl.CERT_REQUIRED
@@ -171,6 +172,7 @@ class OpenLdapInfo():
         self.SourceAnchorAttr_group = SourceAnchorAttr_group
         self.sourceanchorattr_user_is_sid  = sourceanchorattr_user_is_sid
         self.sourceanchorattr_group_is_sid = sourceanchorattr_group_is_sid        
+        self.use_novell_get_universal_password = use_novell_get_universal_password
 
         self.dry_run=True
 
@@ -208,10 +210,14 @@ class OpenLdapInfo():
             SourceAnchor = self.return_source_anchor(user,usertype="user")
             if not SourceAnchor:
                 continue
-
-            if 'hashnt' in self.mapping['user_mapping']:
-                if userdata.get(self.mapping['user_mapping']['hashnt'],[''])[0]:
-                    self.dict_id_hash[SourceAnchor]=user[self.mapping['user_mapping']['hashnt']][0]
+            
+            if self.use_novell_get_universal_password:
+                password = self.conn.extend.novell.get_universal_password(user.entry_dn)
+                self.dict_id_hash[SourceAnchor] = nthash.encrypt(password).upper()
+            else:
+                if 'hashnt' in self.mapping['user_mapping']:
+                    if userdata.get(self.mapping['user_mapping']['hashnt'],[''])[0]:
+                        self.dict_id_hash[SourceAnchor]=user[self.mapping['user_mapping']['hashnt']][0]
                     
             if 'D' in userdata.get('sambaAcctFlags',[''])[0]:
                 enabled = False
