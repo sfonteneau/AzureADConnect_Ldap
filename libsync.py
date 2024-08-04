@@ -213,7 +213,7 @@ class OpenLdapInfo():
                 if userdata.get(self.mapping['user_mapping']['hashnt'],[''])[0]:
                     self.dict_id_hash[SourceAnchor]=user[self.mapping['user_mapping']['hashnt']][0]
                     
-            if 'D' in user["sambaAcctFlags"][0]:
+            if 'D' in userdata.get('sambaAcctFlags',[''])[0]:
                 enabled = False
             else:
                 enabled = True
