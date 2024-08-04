@@ -200,7 +200,9 @@ class OpenLdapInfo():
         # Search all users
         self.conn.search(self.basedn_user, search_filter="(&%s(%s=*))" % (self.filter_user,self.SourceAnchorAttr_user),attributes=ALL_ATTRIBUTES)
         for user in self.conn.entries:
-            if user.uid.value.endswith('$'):
+            userdata = user.entry_attributes_as_dict
+            uid = userdata.get('uid',[''])[0]
+            if uid.endswith('$'):
                 continue
 
             SourceAnchor = self.return_source_anchor(user,usertype="user")
@@ -208,7 +210,7 @@ class OpenLdapInfo():
                 continue
 
             if 'hashnt' in self.mapping['user_mapping']:
-                if user.entry_attributes_as_dict.get(self.mapping['user_mapping']['hashnt'],[''])[0]:
+                if userdata.get(self.mapping['user_mapping']['hashnt'],[''])[0]:
                     self.dict_id_hash[SourceAnchor]=user[self.mapping['user_mapping']['hashnt']][0]
                     
             if 'D' in user["sambaAcctFlags"][0]:
@@ -219,39 +221,39 @@ class OpenLdapInfo():
             data = {
                        "SourceAnchor"               : SourceAnchor,
                        "accountEnabled"             : enabled,
-                       "userPrincipalName"          : user.entry_attributes_as_dict.get(user_mapping['userPrincipalName'],[''])[0],
-                       "onPremisesSamAccountName"   : user.entry_attributes_as_dict.get(user_mapping['onPremisesSamAccountName'],[''])[0],
+                       "userPrincipalName"          : userdata.get(user_mapping['userPrincipalName'],[''])[0],
+                       "onPremisesSamAccountName"   : userdata.get(user_mapping['onPremisesSamAccountName'],[''])[0],
                        "onPremisesDistinguishedName": user.entry_dn,
-                       "dnsDomainName"              : user.entry_attributes_as_dict.get(user_mapping['dnsDomainName'],[''])[0],
-                       "displayName"                : user.entry_attributes_as_dict.get(user_mapping['displayName'],[''])[0],
-                       "givenName"                  : user.entry_attributes_as_dict.get(user_mapping['givenName'],[''])[0],
-                       "surname"                    : user.entry_attributes_as_dict.get(user_mapping['surname'],[''])[0],
-                       "commonName"                 : user.entry_attributes_as_dict.get(user_mapping['commonName'],[''])[0],
-                       "physicalDeliveryOfficeName" : user.entry_attributes_as_dict.get(user_mapping['physicalDeliveryOfficeName'],[''])[0],
-                       "department"                 : user.entry_attributes_as_dict.get(user_mapping['department'],[''])[0],
-                       "employeeId"                 : user.entry_attributes_as_dict.get(user_mapping['employeeId'],[''])[0],
-                       "streetAddress"              : user.entry_attributes_as_dict.get(user_mapping['streetAddress'],[''])[0],
-                       "city"                       : user.entry_attributes_as_dict.get(user_mapping['city'],[''])[0],
-                       "state"                      : user.entry_attributes_as_dict.get(user_mapping['state'],[''])[0],
-                       "telephoneNumber"            : user.entry_attributes_as_dict.get(user_mapping['telephoneNumber'],[''])[0],
-                       "company"                    : user.entry_attributes_as_dict.get(user_mapping['company'],[''])[0],
-                       "employeeType"               : user.entry_attributes_as_dict.get(user_mapping['employeeType'],[''])[0],
-                       "facsimileTelephoneNumber"   : user.entry_attributes_as_dict.get(user_mapping['facsimileTelephoneNumber'],[''])[0],
-                       "mail"                       : user.entry_attributes_as_dict.get(user_mapping['mail'],[''])[0],
-                       "mobile"                     : user.entry_attributes_as_dict.get(user_mapping['mobile'],[''])[0],
-                       "title"                      : user.entry_attributes_as_dict.get(user_mapping['title'],[''])[0],
-                       "proxyAddresses"             : user.entry_attributes_as_dict.get(user_mapping['proxyAddresses'],[]),
+                       "dnsDomainName"              : userdata.get(user_mapping['dnsDomainName'],[''])[0],
+                       "displayName"                : userdata.get(user_mapping['displayName'],[''])[0],
+                       "givenName"                  : userdata.get(user_mapping['givenName'],[''])[0],
+                       "surname"                    : userdata.get(user_mapping['surname'],[''])[0],
+                       "commonName"                 : userdata.get(user_mapping['commonName'],[''])[0],
+                       "physicalDeliveryOfficeName" : userdata.get(user_mapping['physicalDeliveryOfficeName'],[''])[0],
+                       "department"                 : userdata.get(user_mapping['department'],[''])[0],
+                       "employeeId"                 : userdata.get(user_mapping['employeeId'],[''])[0],
+                       "streetAddress"              : userdata.get(user_mapping['streetAddress'],[''])[0],
+                       "city"                       : userdata.get(user_mapping['city'],[''])[0],
+                       "state"                      : userdata.get(user_mapping['state'],[''])[0],
+                       "telephoneNumber"            : userdata.get(user_mapping['telephoneNumber'],[''])[0],
+                       "company"                    : userdata.get(user_mapping['company'],[''])[0],
+                       "employeeType"               : userdata.get(user_mapping['employeeType'],[''])[0],
+                       "facsimileTelephoneNumber"   : userdata.get(user_mapping['facsimileTelephoneNumber'],[''])[0],
+                       "mail"                       : userdata.get(user_mapping['mail'],[''])[0],
+                       "mobile"                     : userdata.get(user_mapping['mobile'],[''])[0],
+                       "title"                      : userdata.get(user_mapping['title'],[''])[0],
+                       "proxyAddresses"             : userdata.get(user_mapping['proxyAddresses'],[]),
                        "usertype"                   : "User"
 
                    }
 
 
-            self.all_dn[user.uid.value]=SourceAnchor
-            self.all_dn[user.uid.value.split('=',1)[-1]]=SourceAnchor
+            self.all_dn[uid]=SourceAnchor
+            self.all_dn[uid.split('=',1)[-1]]=SourceAnchor
             self.all_dn[user.entry_dn]=SourceAnchor
             self.dict_all_users_samba[SourceAnchor] = data
             
-            gidnumber = user.entry_attributes_as_dict.get('gidNumber',[''])[0]
+            gidnumber = userdata.get('gidNumber',[''])[0]
             if gidnumber:
                 if not gidnumber in self.dict_guidnumber_sa:
                     self.dict_guidnumber_sa[gidnumber] = [SourceAnchor]
@@ -273,12 +275,14 @@ class OpenLdapInfo():
                 continue
                 
             groupMembers = {}
+
+            groupdata = group.entry_attributes_as_dict
             for attrgrouptest in ["memberUid","member","uniqueMember"]:
-                for m in group.entry_attributes_as_dict.get(attrgrouptest,[]): 
+                for m in groupdata.get(attrgrouptest,[]): 
                     if m in self.all_dn:
                         groupMembers[self.all_dn[m]] = None
 
-            gidnumber = group.entry_attributes_as_dict.get('gidNumber',[''])[0]
+            gidnumber = groupdata.get('gidNumber',[''])[0]
             if gidnumber:
                 for gi in self.dict_guidnumber_sa.get(gidnumber,[]):
                     groupMembers[gi] = None
@@ -286,9 +290,9 @@ class OpenLdapInfo():
             group_mapping= self.mapping['group_mapping']
             data = {
                            "SourceAnchor"               : SourceAnchor,
-                           "onPremisesSamAccountName"   : group.entry_attributes_as_dict.get(group_mapping['onPremisesSamAccountName'],[''])[0],
+                           "onPremisesSamAccountName"   : groupdata.get(group_mapping['onPremisesSamAccountName'],[''])[0],
                            "onPremisesDistinguishedName": group.entry_dn,
-                           "displayName"                : group.entry_attributes_as_dict.get(group_mapping['displayName'],[''])[0],
+                           "displayName"                : groupdata.get(group_mapping['displayName'],[''])[0],
                            "groupMembers"               : list(groupMembers),
                            "SecurityEnabled"            : True,
                            "usertype"                   : "Group"
