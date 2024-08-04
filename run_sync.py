@@ -7,7 +7,13 @@ import hashlib
 import time
 import configparser
 import traceback
+import argparse
 from peewee import SqliteDatabase,CharField,Model,TextField,DateTimeField
+
+parser = argparse.ArgumentParser(description='Azure ad sync')
+parser.add_argument('--conf', dest='azureconf', default='/etc/azureconf/azure.conf',help='path to conf file')
+parser.add_argument('--force', action=argparse.BooleanOptionalAction,dest='force',help='Force synchronization of all objects',default=False)
+parser.add_argument('--dryrun', action=argparse.BooleanOptionalAction,dest='dryrun',help='simulate a send but does not actually perform the actions',default=None)
 
 if "__file__" in locals():
     sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
@@ -40,7 +46,11 @@ def run_sync(force=False):
     global config
     global db
 
-    dry_run = config.getboolean('common', 'dry_run')
+
+    if args.dryrun != None:
+        dryrun = args.dryrun
+    else:
+        dryrun = config.getboolean('common', 'dry_run')
 
     if not dry_run:
         if logfile:
@@ -215,6 +225,6 @@ def run_sync(force=False):
                     AzureObject.update(last_sha256_hashnt_send = sha2password,last_send_hashnt_date = datetime.datetime.now()).where(AzureObject.sourceanchor==entry).execute()
 
 if __name__ == '__main__':
-    run_sync(force=False)
+    run_sync(force=args.force)
 
 db.close()
