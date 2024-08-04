@@ -1,5 +1,9 @@
 # Changelog
 
+## [2024-08-04]
+- Add params : basedn_user,basedn_group, filter_user and filter_group in config file.
+- Add args for run : --conf, --force, --dryrun, --logfile
+
 ## [2024-07-31]
 - toggle from uidnumber/guidnumber to sambaSID in the example. 
   Added sourceanchorattr_user_is_sid and sourceanchorattr_group_is_sid parameters to conform to how Azure Ad Connect Windows works (base64 encoding of a binary attribute, sid is binary)
