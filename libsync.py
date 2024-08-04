@@ -247,9 +247,9 @@ class OpenLdapInfo():
 
                    }
 
-
-            self.all_dn[uid]=SourceAnchor
-            self.all_dn[uid.split('=',1)[-1]]=SourceAnchor
+            if uid:
+                self.all_dn[uid]=SourceAnchor
+                self.all_dn[uid.split('=',1)[-1]]=SourceAnchor
             self.all_dn[user.entry_dn]=SourceAnchor
             self.dict_all_users_samba[SourceAnchor] = data
             
