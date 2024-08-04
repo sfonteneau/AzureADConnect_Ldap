@@ -4,6 +4,7 @@
 - Add params : basedn_user,basedn_group, filter_user and filter_group in config file.
 - Add args for run : --conf, --force, --dryrun, --logfile
 - Improve log (json format)
+- Add use_novell_get_universal_password params in conf (not testing), 
 
 ## [2024-07-31]
 - toggle from uidnumber/guidnumber to sambaSID in the example. 
