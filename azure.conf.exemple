@@ -21,7 +21,8 @@ verify_cert_ldap        = False
 path_to_bundle_crt_ldap = lib_python_certifi
 ;for lib_python_certifi  value is  /usr/local/lib/python3.9/dist-packages/certifi/cacert.pem
 
-basedn                  = dc=demo,dc=lan
+basedn_user             = dc=demo,dc=lan
+basedn_group            = dc=demo,dc=lan
 user_ldap               = cn=admin,dc=demo,dc=lan
 password_ldap           = password
 
