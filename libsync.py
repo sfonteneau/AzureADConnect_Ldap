@@ -139,7 +139,7 @@ class AdConnect():
 
 class OpenLdapInfo():
 
-    def __init__(self,SourceAnchorAttr_user="uidNumber",SourceAnchorAttr_group="gidNumber",server=None, username=None,password=None,basedn=None,port=None,mapping={},verify_cert=False,use_ssl=True,path_to_bundle_crt_ldap=None,sourceanchorattr_user_is_sid=True,sourceanchorattr_group_is_sid=True):
+    def __init__(self,SourceAnchorAttr_user="uidNumber",SourceAnchorAttr_group="gidNumber",server=None, username=None,password=None,basedn_user=None,basedn_group=None,port=None,mapping={},verify_cert=False,use_ssl=True,path_to_bundle_crt_ldap=None,sourceanchorattr_user_is_sid=True,sourceanchorattr_group_is_sid=True):
 
         if verify_cert:
             ldapssl = ssl.CERT_REQUIRED
@@ -159,7 +159,8 @@ class OpenLdapInfo():
         self.conn = Connection(server=serverobj, user=username, password=password.encode('utf-8'), raise_exceptions=True)
         self.conn.bind()
         self.mapping = mapping
-        self.basedn = basedn
+        self.basedn_user = basedn_user
+        self.basedn_group = basedn_group
         self.dict_all_users_samba={}
         self.all_dn={}
         self.dict_guidnumber_sa={}
@@ -195,7 +196,7 @@ class OpenLdapInfo():
         self.all_dn={}
         self.dict_id_hash = {}
         # Search all users
-        self.conn.search(self.basedn, search_filter="(&(objectClass=posixAccount)(%s=*))" % self.SourceAnchorAttr_user,attributes=ALL_ATTRIBUTES)
+        self.conn.search(self.basedn_user, search_filter="(&(objectClass=posixAccount)(%s=*))" % self.SourceAnchorAttr_user,attributes=ALL_ATTRIBUTES)
         for user in self.conn.entries:
             if user.uid.value.endswith('$'):
                 continue
@@ -255,7 +256,7 @@ class OpenLdapInfo():
                 else:
                     self.dict_guidnumber_sa[gidnumber].append(SourceAnchor)
 
-        self.conn.search(self.basedn, search_filter="(&(objectClass=posixGroup)(%s=*))" % self.SourceAnchorAttr_group,attributes=ALL_ATTRIBUTES)
+        self.conn.search(self.basedn_group, search_filter="(&(objectClass=posixGroup)(%s=*))" % self.SourceAnchorAttr_group,attributes=ALL_ATTRIBUTES)
         
         for group in self.conn.entries:
             SourceAnchor = self.return_source_anchor(group,"group")
