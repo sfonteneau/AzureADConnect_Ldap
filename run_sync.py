@@ -14,16 +14,19 @@ parser = argparse.ArgumentParser(description='Azure ad sync')
 parser.add_argument('--conf', dest='azureconf', default='/etc/azureconf/azure.conf',help='path to conf file')
 parser.add_argument('--force', action=argparse.BooleanOptionalAction,dest='force',help='Force synchronization of all objects',default=False)
 parser.add_argument('--dryrun', action=argparse.BooleanOptionalAction,dest='dryrun',help='simulate a send but does not actually perform the actions',default=None)
+parser.add_argument('--logfile', dest='logfile', default='/var/log/azure_ad_sync',help='File log output')
+
+args = parser.parse_args()
 
 if "__file__" in locals():
     sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 
 from libsync import AdConnect,OpenLdapInfo,write_log_json_data,logger,logging
 
-azureconf='/etc/azureconf/azure.conf'
+azureconf = args.azureconf
 config = configparser.ConfigParser()
 config.read(azureconf)
-logfile = '/var/log/azure_ad_sync'
+logfile = args.logfile
 
 db = SqliteDatabase(config.get('common', 'dbpath'))
 
@@ -48,9 +51,9 @@ def run_sync(force=False):
 
 
     if args.dryrun != None:
-        dryrun = args.dryrun
+        dry_run = args.dryrun
     else:
-        dryrun = config.getboolean('common', 'dry_run')
+        dry_run = config.getboolean('common', 'dry_run')
 
     if not dry_run:
         if logfile:
@@ -91,7 +94,7 @@ def run_sync(force=False):
     else:
         azure.proxiesconf = {}
 
-    with open('/etc/azureconf/mapping.json','r') as f:
+    with open(os.path.join(azureconf.rsplit(os.sep,1)[0] ,'mapping.json'),'r') as f:
         mapping = json.loads(f.read())
 
     smb = OpenLdapInfo(SourceAnchorAttr_user         = config.get('common', 'SourceAnchorAttr_user'),
