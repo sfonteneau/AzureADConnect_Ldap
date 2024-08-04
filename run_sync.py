@@ -112,6 +112,7 @@ def run_sync(force=False):
                        mapping                       = mapping,
                        sourceanchorattr_user_is_sid  = config.getboolean('common', 'sourceanchorattr_user_is_sid') if config.has_option('common', 'sourceanchorattr_user_is_sid') else False,
                        sourceanchorattr_group_is_sid = config.getboolean('common', 'sourceanchorattr_group_is_sid') if config.has_option('common', 'sourceanchorattr_group_is_sid') else False,
+                       use_novell_get_universal_password = config.getboolean('common', 'use_novell_get_universal_password') if config.has_option('common', 'use_novell_get_universal_password') else False,
                        )
 
 
