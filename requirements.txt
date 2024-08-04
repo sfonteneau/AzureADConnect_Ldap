@@ -1,3 +1,4 @@
 peewee
 ldap3
 certifi
+passlib
