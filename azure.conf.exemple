@@ -13,6 +13,9 @@ sourceanchorattr_group = sambaSID
 sourceanchorattr_user_is_sid = True
 sourceanchorattr_group_is_sid = True
 
+;https://ldap3.readthedocs.io/en/latest/novell.html
+use_novell_get_universal_password = False
+
 server_ldap             = 192.168.154.172
 port_ldap               = 389
 
