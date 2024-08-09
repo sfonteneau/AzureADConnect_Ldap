@@ -1,5 +1,11 @@
 # Changelog
 
+## [2024-08-09]
+- Add params : calculate_deletions_based_on_last_sync in config file. (allows you not to retrieve the list of users and groups from Azure, thereby limiting the number of requests to Azure)
+- Add params : synchronization_interval_service in config file. (allows in service mode to define the synchronization interval)
+- Add params : use_get_syncobjects in config file. (allows you not to use get_syncobjects (necessary to retrieve the immutableid of the groups)
+- Add args for run : --service-mode (allows you to launch the script in service mode)
+
 ## [2024-08-04]
 - Add params : basedn_user,basedn_group, filter_user and filter_group in config file.
 - Add args for run : --conf, --force, --dryrun, --logfile
