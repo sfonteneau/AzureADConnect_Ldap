@@ -63,7 +63,7 @@ class AdConnect():
         self.cache_file = os.path.join(os.path.dirname(os.path.realpath(__file__)),'last_token.json')
 
         self.dry_run=True
-        self.use_get_syncobjects = False
+        self.use_get_syncobjects = True
         self.az = None
         self.dict_az_user={}
         self.dict_az_group={}
