@@ -30,6 +30,10 @@ logfile = args.logfile
 
 db = SqliteDatabase(config.get('common', 'dbpath'))
 
+calculate_deletions_based_on_last_sync = True
+if config.has_option('common', 'calculate_deletions_based_on_last_sync'):
+    calculate_deletions_based_on_last_sync = config.getboolean('common', 'calculate_deletions_based_on_last_sync')
+
 class AzureObject(Model):
     sourceanchor = CharField(primary_key=True, index=True)
     object_type = CharField(null=True)
@@ -44,7 +48,7 @@ class AzureObject(Model):
 def hash_for_data(data):
     return hashlib.sha1(pickle.dumps(data)).hexdigest()
 
-def run_sync(force=False):
+def run_sync(force=False,from_db=False):
 
     global config
     global db
@@ -60,6 +64,9 @@ def run_sync(force=False):
             fhandler = logging.FileHandler(logfile)
             logger.addHandler(fhandler)
 
+    use_get_syncobjects = True
+    if config.has_option('common', 'use_get_syncobjects'):
+        use_get_syncobjects = config.getboolean('common', 'use_get_syncobjects')
 
     hash_synchronization = config.getboolean('common', 'hash_synchronization')
 
@@ -69,6 +76,7 @@ def run_sync(force=False):
 
     azure = AdConnect()
     azure.dry_run = dry_run
+    azure.use_get_syncobjects = use_get_syncobjects
 
 
     if config.has_option('common', 'tenant_id'):
@@ -138,8 +146,12 @@ def run_sync(force=False):
     smb.generate_all_dict()
 
     if config.getboolean('common', 'do_delete'):
-
-        azure.generate_all_dict()
+        
+        if from_db:
+            for u in AzureObject.select(AzureObject.sourceanchor,AzureObject.last_data_send).where(AzureObject.object_type=='user'):
+                azure.dict_az_user[u.sourceanchor] = u.last_data_send
+        else:
+            azure.generate_all_dict()
 
         # Delete user in azure and not found in samba
         for user in azure.dict_az_user:
@@ -153,6 +165,10 @@ def run_sync(force=False):
                 if not dry_run:
                     AzureObject.delete().where(AzureObject.sourceanchor==user,AzureObject.object_type=='user').execute()
 
+        # Delete group in azure and not found in ldap 
+        if (not use_get_syncobjects) or from_db:
+            for g in AzureObject.select(AzureObject.sourceanchor,AzureObject.last_data_send).where(AzureObject.object_type=='group'):
+                azure.dict_az_group[g.sourceanchor] = g.last_data_send
 
         # Delete group in azure and not found in samba
         for group in azure.dict_az_group:
@@ -232,6 +248,6 @@ def run_sync(force=False):
                     AzureObject.update(last_sha256_hashnt_send = sha2password,last_send_hashnt_date = datetime.datetime.now()).where(AzureObject.sourceanchor==entry).execute()
 
 if __name__ == '__main__':
-    run_sync(force=args.force)
+    run_sync(force=args.force,from_db=calculate_deletions_based_on_last_sync)
 
 db.close()
