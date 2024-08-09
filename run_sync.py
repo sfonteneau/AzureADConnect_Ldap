@@ -35,6 +35,11 @@ calculate_deletions_based_on_last_sync = False
 if config.has_option('common', 'calculate_deletions_based_on_last_sync'):
     calculate_deletions_based_on_last_sync = config.getboolean('common', 'calculate_deletions_based_on_last_sync')
 
+synchronization_interval_service=60
+
+if config.has_option('common', 'synchronization_interval_service'):
+    synchronization_interval_service = config.getint('common', 'synchronization_interval_service')
+
 class AzureObject(Model):
     sourceanchor = CharField(primary_key=True, index=True)
     object_type = CharField(null=True)
