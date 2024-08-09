@@ -30,7 +30,7 @@ logfile = args.logfile
 
 db = SqliteDatabase(config.get('common', 'dbpath'))
 
-calculate_deletions_based_on_last_sync = True
+calculate_deletions_based_on_last_sync = False
 if config.has_option('common', 'calculate_deletions_based_on_last_sync'):
     calculate_deletions_based_on_last_sync = config.getboolean('common', 'calculate_deletions_based_on_last_sync')
 
