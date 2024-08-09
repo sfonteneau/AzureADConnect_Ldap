@@ -63,7 +63,7 @@ class AdConnect():
         self.cache_file = os.path.join(os.path.dirname(os.path.realpath(__file__)),'last_token.json')
 
         self.dry_run=True
-
+        self.use_get_syncobjects = False
         self.az = None
         self.dict_az_user={}
         self.dict_az_group={}
@@ -115,6 +115,9 @@ class AdConnect():
             self.dict_az_user[user["immutable_id"]] = user
 
         self.dict_az_group = {}
+
+        if not self.use_get_syncobjects:
+            return
 
         try:
             list_groups = self.az.list_groups()
