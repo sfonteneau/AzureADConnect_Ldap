@@ -203,8 +203,13 @@ class OpenLdapInfo():
         self.all_dn={}
         self.dict_id_hash = {}
         # Search all users
-        self.conn.search(self.basedn_user, search_filter="(&%s(%s=*))" % (self.filter_user,self.SourceAnchorAttr_user),attributes=ALL_ATTRIBUTES)
-        for user in self.conn.entries:
+
+        all_user_result = []
+        for bdn in self.basedn_user.split('|') : 
+            self.conn.search(bdn.strip(), search_filter="(&%s(%s=*))" % (self.filter_user,self.SourceAnchorAttr_user),attributes=ALL_ATTRIBUTES)
+            all_user_result.extend(self.conn.entries)
+
+        for user in all_user_result:
             userdata = user.entry_attributes_as_dict
             uid = userdata.get('uid',[''])[0]
             if uid.endswith('$'):
@@ -269,16 +274,19 @@ class OpenLdapInfo():
                 else:
                     self.dict_guidnumber_sa[gidnumber].append(SourceAnchor)
 
-        self.conn.search(self.basedn_group, search_filter="(&%s(%s=*))" % (self.filter_group,self.SourceAnchorAttr_group),attributes=ALL_ATTRIBUTES)
+        all_group_result = []
+        for bdn in self.basedn_group.split('|'):
+            self.conn.search(bdn.strip(), search_filter="(&%s(%s=*))" % (self.filter_group,self.SourceAnchorAttr_group),attributes=ALL_ATTRIBUTES)
+            all_group_result.extend(self.conn.entries)
         
-        for group in self.conn.entries:
+        for group in all_group_result:
             SourceAnchor = self.return_source_anchor(group,"group")
             if not SourceAnchor:
                 continue            
             self.all_dn[group.entry_dn] = SourceAnchor
             self.all_dn[group.entry_dn.split(',')[0]] = SourceAnchor
         
-        for group in self.conn.entries:
+        for group in all_group_result:
             SourceAnchor = self.return_source_anchor(group,"group")
             if not SourceAnchor:
                 continue
