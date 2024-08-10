@@ -53,6 +53,24 @@ Warning
 configuration
 ========================
 
+LDAP connection settings
+-------------------------------
+
+| Params                  | Value exemple              | Description                                                                                                                                                                                          |
+| ----------------------- | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| server_ldap             | 192.168.154.172            | Name or ip or the complete url in the scheme://hostname:hostport format of the server (required) - port and scheme (ldap or ldaps) defined here have precedence over the parameters port and use_ssl |
+| port_ldap               | 389                        | The port where the DSA server is listening (defaults to 389, for a cleartext connection, 636 for a secured connection)                                                                               |
+| use_ssl_ldap            | False                      | Specifies if the connection is on a secure port (defaults to False). When True the secure port is usually set to 636                                                                                 |
+| verify_cert_ldap        | False                      | Defined if the ldap ssl/tls connection should be verified and validated                                                                                                                              |
+| path_to_bundle_crt_ldap | /root/ldap.crt             | If verify_cert_ldap is True then you must define a certificate bundle path with which the connection will be verified, "lib_python_certifi" indicates to check with the "certifi" library            |     
+| user_ldap               | cn=admin,dc=demo,dc=lan    | login for ldap connection                                                                                                                                                                            |
+| password_ldap           | password                   | password for ldap connection                                                                                                                                                                         |
+| basedn_user             | OU=USER,DC=DEMO,DC=LAN     | indicate several bases dn , separate them with \|                                                                                                                                                    |                            
+| basedn_group            | OU=GROUP,DC=DEMO,DC=LAN    | indicate several bases dn , separate them with \|                                                                                                                                                    |     
+| filter_user             | (objectClass=posixAccount) | Specifies the ldap filter to use to find users                                                                                                                                                       |
+| filter_group            | (objectClass=posixGroup)   | Specifies the ldap filter to use to find groups                                                                                                                                                      |
+
+
 sourceanchor
 -----------------------------
 
@@ -65,33 +83,6 @@ A dry_run mode allows you to run the script without making any changes
 You can indicate that the attribute you have chosen is a "sid" with the parameter "sourceanchorattr_user_is_sid" and "sourceanchorattr_group_is_sid" for conform to how Azure Ad Connect windows works (base64 encoding of a binary attribute, sid is binary)
 
 see: https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/plan-connect-design-concepts#selecting-a-good-sourceanchor-attribute
-
-using specific basedn
------------------------------
-
-You must specify a specific base DN for each object type:
-
-```
-basedn_user     = OU=USER,DC=MYDOMAIN,DC=LAN
-basedn_group    = OU=GROUP,DC=MYDOMAIN,DC=LAN
-```
-
-For precisely several bases dn, separate them with | 
-
-```
-basedn_user     = OU=USER,DC=MYDOMAIN,DC=LAN|OU=USER2,DC=MYDOMAIN,DC=LAN
-```
-
-filter for search
------------------------------
-
-You can specify a specific custom ldap filter for search in ldap:
-
-```
-filter_user             = (objectClass=posixAccount)
-filter_group            = (objectClass=posixGroup)
-```
-
 
 password
 -------------------------------------
