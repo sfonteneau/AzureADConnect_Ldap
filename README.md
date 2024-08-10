@@ -48,8 +48,13 @@ Warning
 * User and group management only
 
 
+
+
+configuration
+========================
+
 sourceanchor
-=============
+-----------------------------
 
 The default sourceanchor for user and group in azure.conf.exemple is sambaSID
 
@@ -61,9 +66,40 @@ You can indicate that the attribute you have chosen is a "sid" with the paramete
 
 see: https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/plan-connect-design-concepts#selecting-a-good-sourceanchor-attribute
 
+using specific basedn
+-----------------------------
+
+You must specify a specific base DN for each object type:
+
+```
+basedn_user     = OU=USER,DC=MYDOMAIN,DC=LAN
+basedn_group    = OU=GROUP,DC=MYDOMAIN,DC=LAN
+```
+
+For precisely several bases dn, separate them with | 
+
+```
+basedn_user     = OU=USER,DC=MYDOMAIN,DC=LAN|OU=USER2,DC=MYDOMAIN,DC=LAN
+```
+
+filter for search
+-----------------------------
+
+You can specify a specific custom ldap filter for search in ldap:
+
+```
+filter_user             = (objectClass=posixAccount)
+filter_group            = (objectClass=posixGroup)
+```
+
+
 password
-=============
+-------------------------------------
 
 The password sent to azure ad is an "NTLM hash", if you are using an openldap with samba3 schema then that hash is the sambaNTPassword
 
 As far as I know , there is currently no other type of hash supported by microsoft, the other alternative is the plaintext password...
+
+Novell
+`````````````````````````
+Using use_novell_get_universal_password allows you to use ldap3's get_universal_password function with novell. With this operation the password is recovered in plain text and then converted to hashing automatically.
