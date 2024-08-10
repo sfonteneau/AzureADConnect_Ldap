@@ -48,9 +48,7 @@ Warning
 * User and group management only
 
 
-
-
-configuration
+Configuration
 ========================
 
 LDAP connection settings
