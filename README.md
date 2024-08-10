@@ -71,6 +71,19 @@ LDAP connection settings
 | filter_group            | (objectClass=posixGroup)   | Specifies the ldap filter to use to find groups                                                                                                                                                      |
 
 
+Other settings
+-------------------------------
+
+| Params                  | Value exemple                        | Description                                                                                                                   |
+| ----------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------|
+| do_delete               | True                                 | defined if objects found online on Azure and not present locally must be deleted.                                             |
+| hash_synchronization    | True                                 | hash_synchronization set whether passwords should be synchronized.                                                            |
+| dry_run                 | True                                 | he script will display the actions but will not perform the action                                                            |
+| dbpath                  | /root/last_send_azuread.db           | the last data sent is stored there.                                                                                           |
+| proxy                   | 192.168.1.2:3128                     | define the proxy to use                                                                                                       |
+| tenant_id               | 6121018c-f311-9999-9999-ec17bba6e422 | indicate the tenant_id here                                                                                                   |
+| credential_cache_file   | /root/last_token_azuread.json        | indicates the path to the credentials cache                                                                                   |
+
 sourceanchor
 -----------------------------
 
@@ -87,7 +100,7 @@ see: https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/plan-connec
 password
 -------------------------------------
 
-The password sent to azure ad is an "NTLM hash", if you are using an openldap with samba3 schema then that hash is the sambaNTPassword
+The password sent to azure ad is an "NTLM hash", if you are using an openldap with samba3 schema then that hash is the sambaNTPassword, configure it with "hashnt" in the mapping.json file.
 
 As far as I know , there is currently no other type of hash supported by microsoft, the other alternative is the plaintext password...
 
