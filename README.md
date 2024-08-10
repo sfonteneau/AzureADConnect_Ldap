@@ -107,3 +107,10 @@ As far as I know , there is currently no other type of hash supported by microso
 Novell :
 
 Using use_novell_get_universal_password allows you to use ldap3's get_universal_password function with novell. With this operation the password is recovered in plain text and then converted to hashing automatically.
+
+Mapping attribut
+-------------------------------------
+
+Vous devez indiquer le mapping d'attribut dans ce fichier
+
+https://github.com/sfonteneau/AzureADConnect_Ldap/blob/main/mapping.json.exemple
