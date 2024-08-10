@@ -111,6 +111,6 @@ Using use_novell_get_universal_password allows you to use ldap3's get_universal_
 Mapping attribut
 -------------------------------------
 
-Vous devez indiquer le mapping d'attribut dans ce fichier
+You must specify the attribute mapping in this file
 
 https://github.com/sfonteneau/AzureADConnect_Ldap/blob/main/mapping.json.exemple
