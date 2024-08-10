@@ -74,15 +74,16 @@ LDAP connection settings
 Other settings
 -------------------------------
 
-| Params                  | Value exemple                        | Description                                                                                                                   |
-| ----------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------|
-| do_delete               | True                                 | defined if objects found online on Azure and not present locally must be deleted.                                             |
-| hash_synchronization    | True                                 | hash_synchronization set whether passwords should be synchronized.                                                            |
-| dry_run                 | True                                 | he script will display the actions but will not perform the action                                                            |
-| dbpath                  | /root/last_send_azuread.db           | the last data sent is stored there.                                                                                           |
-| proxy                   | 192.168.1.2:3128                     | define the proxy to use                                                                                                       |
-| tenant_id               | 6121018c-f311-9999-9999-ec17bba6e422 | indicate the tenant_id here                                                                                                   |
-| credential_cache_file   | /root/last_token_azuread.json        | indicates the path to the credentials cache                                                                                   |
+| Params                                 | Value exemple                        | Description                                                                                                                                                                           |
+| -------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| do_delete                              | True                                 | defined if objects found online on Azure and not present locally must be deleted.                                                                                                     |
+| hash_synchronization                   | True                                 | hash_synchronization set whether passwords should be synchronized.                                                                                                                    |
+| dry_run                                | True                                 | he script will display the actions but will not perform the action                                                                                                                    |
+| dbpath                                 | /root/last_send_azuread.db           | the last data sent is stored there.                                                                                                                                                   |
+| proxy                                  | 192.168.1.2:3128                     | define the proxy to use                                                                                                                                                               |
+| tenant_id                              | 6121018c-f311-9999-9999-ec17bba6e422 | indicate the tenant_id here                                                                                                                                                           |
+| credential_cache_file                  | /root/last_token_azuread.json        | indicates the path to the credentials cache                                                                                                                                           |
+| calculate_deletions_based_on_last_sync | False                                | allows you not to retrieve the list of users and groups from Azure, thereby limiting the number of requests to Azure , Can only be triggered after a first successful synchronization |
 
 sourceanchor
 -----------------------------
