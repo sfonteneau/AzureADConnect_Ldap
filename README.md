@@ -115,3 +115,15 @@ Mapping attribut
 You must specify the attribute mapping in this file
 
 https://github.com/sfonteneau/AzureADConnect_Ldap/blob/main/mapping.json.exemple
+
+Args for script
+====================================
+
+| Args                                   | Description                                                                         | Default Value             |
+| -------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------- |
+| --conf                                 | path to conf file                                                                   | /etc/azureconf/azure.conf |
+| --force                                | Force synchronization of all objects                                                | False                     |
+| --dryrun                               | simulate a send but does not actually perform the actions                           | Value in config File      |
+| --logfile                              | logfile                                                                             | /var/log/azure_ad_sync    |
+| --service-mode                         | Run the script in service mode                                                      | False                     |
+
