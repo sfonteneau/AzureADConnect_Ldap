@@ -101,5 +101,5 @@ The password sent to azure ad is an "NTLM hash", if you are using an openldap wi
 As far as I know , there is currently no other type of hash supported by microsoft, the other alternative is the plaintext password...
 
 Novell
-`````````````````````````
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 Using use_novell_get_universal_password allows you to use ldap3's get_universal_password function with novell. With this operation the password is recovered in plain text and then converted to hashing automatically.
