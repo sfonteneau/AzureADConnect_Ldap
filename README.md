@@ -5,17 +5,12 @@ If you are using samba 4 see : https://github.com/sfonteneau/AzureADConnect_Samb
 
 ```
 apt-get install git
-cd /tmp
-git clone https://github.com/sfonteneau/AzureADConnect_Ldap.git
-mv AzureADConnect_Ldap /opt/sync-azure
-cd /opt/sync-azure/
-git submodule update --progress --init -- "AADInternals_python"
-cd /opt/sync-azure/AADInternals_python
-git submodule update --progress --init -- "python_wcfbin"
+git clone https://github.com/sfonteneau/AzureADConnect_Ldap.git /opt/sync-azure
+git -C /opt/sync-azure submodule update --progress --init -- "AADInternals_python"
+git -C /opt/sync-azure/AADInternals_python submodule update --progress --init -- "python_wcfbin"
 mkdir /etc/azureconf/
-cd /opt/sync-azure
-cp -f azure.conf.exemple /etc/azureconf/azure.conf
-cp -f mapping.json.exemple /etc/azureconf/mapping.json
+cp -f /opt/sync-azure/azure.conf.exemple /etc/azureconf/azure.conf
+cp -f /opt/sync-azure/mapping.json.exemple /etc/azureconf/mapping.json
 apt-get install python3-peewee python3-passlib python3-xmltodict python3-requests python3-azure python3-ldap3 -y
 ```
 
