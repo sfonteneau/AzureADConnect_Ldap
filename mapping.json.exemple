@@ -26,6 +26,7 @@
         "group_mapping" : {
         "onPremisesSamAccountName"   : "cn",
         "onPremisesDistinguishedName": "cn",
-        "displayName"                : "cn"
+        "displayName"                : "cn",
+        "mail"                       : "mail"
         }
 }
