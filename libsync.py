@@ -74,8 +74,6 @@ class AdConnect():
                                    tenant_id=self.tenant_id,
                                    cache_file=self.cache_file)
             self.tenant_id = self.az.tenant_id
-            self.mailadmin = None
-            self.passwordadmin = None
 
     def enable_ad_sync(self):
         self.connect()
