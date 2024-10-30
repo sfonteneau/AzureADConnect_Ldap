@@ -88,12 +88,6 @@ def run_sync(force=False,from_db=False):
     if config.has_option('common', 'tenant_id'):
         azure.tenant_id = config.get('common', 'tenant_id')
 
-    if config.has_option('common', 'mailadmin'):
-        azure.mailadmin = config.get('common', 'mailadmin')
-
-    if config.has_option('common', 'passwordadmin'):
-        azure.passwordadmin = config.get('common', 'passwordadmin')
-
     if config.has_option('common', 'save_to_cache'):
         azure.save_to_cache = config.getboolean('common', 'save_to_cache')
 

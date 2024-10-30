@@ -11,7 +11,7 @@ git -C /opt/sync-azure/AADInternals_python submodule update --progress --init --
 mkdir /etc/azureconf/
 cp -f /opt/sync-azure/azure.conf.exemple /etc/azureconf/azure.conf
 cp -f /opt/sync-azure/mapping.json.exemple /etc/azureconf/mapping.json
-apt-get install python3-peewee python3-passlib python3-xmltodict python3-requests python3-azure python3-ldap3 -y
+apt-get install python3-peewee python3-passlib python3-xmltodict python3-requests python3-adal python3-ldap3 -y
 ```
 
 

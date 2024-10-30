@@ -1,5 +1,8 @@
 # Changelog
 
+## [2024-10-31]
+- Remove password and mail for login azure
+
 ## [2024-08-09]
 - Add params : calculate_deletions_based_on_last_sync in config file. (allows you not to retrieve the list of users and groups from Azure, thereby limiting the number of requests to Azure)
 - Add params : synchronization_interval_service in config file. (allows in service mode to define the synchronization interval)

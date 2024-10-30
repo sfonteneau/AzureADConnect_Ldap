@@ -52,8 +52,6 @@ class AdConnect():
     def __init__(self):
 
 
-        self.mailadmin = None
-        self.passwordadmin = None
         self.proxiesconf = None
 
 
@@ -70,9 +68,7 @@ class AdConnect():
 
     def connect(self):
         if not self.az:
-            self.az = AADInternals(mail=self.mailadmin,
-                                   password=self.passwordadmin,
-                                   proxies=self.proxiesconf,
+            self.az = AADInternals(proxies=self.proxiesconf,
                                    use_cache=self.use_cache,
                                    save_to_cache=self.save_to_cache,
                                    tenant_id=self.tenant_id,
