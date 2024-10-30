@@ -104,9 +104,9 @@ class AdConnect():
         for user in self.az.list_users():
             if not user['dirSyncEnabled']:
                 continue
-            if not user.get('immutable_id'):
+            if not user.get('immutableId'):
                 continue
-            self.dict_az_user[user["immutable_id"]] = user
+            self.dict_az_user[user["immutableId"]] = user
 
         self.dict_az_group = {}
 
