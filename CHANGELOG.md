@@ -2,6 +2,7 @@
 
 ## [2024-10-31]
 - Remove password and mail for login azure, switch to lib msal
+- Replace DIY cache, by official cache in msal
 
 ## [2024-08-09]
 - Add params : calculate_deletions_based_on_last_sync in config file. (allows you not to retrieve the list of users and groups from Azure, thereby limiting the number of requests to Azure)
