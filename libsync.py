@@ -101,32 +101,28 @@ class AdConnect():
     def generate_all_dict(self):
         self.connect()
         self.dict_az_user = {}
-        for user in self.az.list_users():
-            if not user['dirSyncEnabled']:
-                continue
-            if not user.get('immutableId'):
-                continue
-            self.dict_az_user[user["immutableId"]] = user
-
         self.dict_az_group = {}
+
+        for user in self.az.list_users(select="onPremisesImmutableId,userPrincipalName"):
+            if not user.get('onPremisesImmutableId'):
+                continue
+            self.dict_az_user[user["onPremisesImmutableId"]] = user
 
         if not self.use_get_syncobjects:
             return
 
         try:
-            list_groups = self.az.list_groups()
+            list_groups = self.az.list_groups(select="onPremisesImmutableId,userPrincipalName,id")
         except Exception as e:
             if 'Identity synchronization is not yet activated for this company' in str(e):
                 list_groups = []
             else:
                 raise
-            
+
         for group in list_groups:
-            if not group['dirSyncEnabled']:
+            if not group.get('onPremisesImmutableId'):
                 continue
-            if not group.get('immutable_id'):
-                continue
-            self.dict_az_group[group["immutable_id"]] = group
+            self.dict_az_group[group["onPremisesImmutableId"]] = group
 
 
     def send_hashnt(self,hashnt,sourceanchor):
