@@ -65,6 +65,7 @@ class AdConnect():
         self.az = None
         self.dict_az_user={}
         self.dict_az_group={}
+        self.verify=True
 
     def connect(self):
         if not self.az:
@@ -72,7 +73,8 @@ class AdConnect():
                                    use_cache=self.use_cache,
                                    save_to_cache=self.save_to_cache,
                                    tenant_id=self.tenant_id,
-                                   cache_file=self.cache_file)
+                                   cache_file=self.cache_file,
+                                   verify=self.verify)
             self.tenant_id = self.az.tenant_id
             self.az.get_token(scopes=["https://graph.windows.net/.default"])
 

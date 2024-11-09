@@ -1,5 +1,8 @@
 # Changelog
 
+## [2024-11-09]
+- Add params verify, Useful when you have a firewall that performs SSL inspection, you can mention the firewall certificate in configuration file.
+
 ## [2024-10-31]
 - Remove password and mail for login azure, switch to lib msal
 - Replace DIY cache, by official cache in msal

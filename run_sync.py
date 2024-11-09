@@ -102,6 +102,16 @@ def run_sync(force=False,from_db=False):
     else:
         azure.proxiesconf = {}
 
+    if config.has_option('common', 'verify'):
+        if config.get('common', 'verify').lower() in ('true', '1'):
+            azure.verify = True
+        elif config.get('common', 'verify').lower() in ('false', '0'):
+            azure.verify = False
+        else:
+            azure.verify = config.get('common', 'verify')
+    else:
+        azure.verify = True   
+
     with open(os.path.join(azureconf.rsplit(os.sep,1)[0] ,'mapping.json'),'r') as f:
         mapping = json.loads(f.read())
 
