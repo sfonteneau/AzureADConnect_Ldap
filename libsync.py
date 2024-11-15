@@ -106,8 +106,10 @@ class AdConnect():
         self.dict_az_user = {}
         self.dict_az_group = {}
 
-        for user in self.az.list_users(select="onPremisesImmutableId,userPrincipalName"):
+        for user in self.az.list_users(select="onPremisesImmutableId,userPrincipalName,onPremisesSyncEnabled"):
             if not user.get('onPremisesImmutableId'):
+                continue
+            if not user.get('onPremisesSyncEnabled'):
                 continue
             self.dict_az_user[user["onPremisesImmutableId"]] = user
 
