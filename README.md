@@ -5,9 +5,7 @@ If you are using samba 4 see : https://github.com/sfonteneau/AzureADConnect_Samb
 
 ```
 apt-get install git
-git clone https://github.com/sfonteneau/AzureADConnect_Ldap.git /opt/sync-azure
-git -C /opt/sync-azure submodule update --progress --init -- "AADInternals_python"
-git -C /opt/sync-azure/AADInternals_python submodule update --progress --init -- "python_wcfbin"
+git clone --recurse-submodules https://github.com/sfonteneau/AzureADConnect_Ldap.git /opt/sync-azure
 mkdir /etc/azureconf/
 cp -f /opt/sync-azure/azure.conf.exemple /etc/azureconf/azure.conf
 cp -f /opt/sync-azure/mapping.json.exemple /etc/azureconf/mapping.json
