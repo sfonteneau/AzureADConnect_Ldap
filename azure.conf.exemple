@@ -2,7 +2,8 @@
 proxy =
 tenant_id = 6121018c-f311-9999-9999-ec17bba6e422
 
-credential_cache_file = /root/last_token_azuread.json
+; Directory containing the Entra certificate identity (PFX files).
+entra_aba_dir = /root/entra_aba
 
 ;https://learn.microsoft.com/en-us/azure/active-directory/hybrid/plan-connect-design-concepts#sourceanchor
 sourceanchorattr_user  = sambaSID

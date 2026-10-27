@@ -9,23 +9,28 @@ git clone --recurse-submodules https://github.com/sfonteneau/AzureADConnect_Ldap
 mkdir /etc/azureconf/
 cp -f /opt/sync-azure/azure.conf.exemple /etc/azureconf/azure.conf
 cp -f /opt/sync-azure/mapping.json.exemple /etc/azureconf/mapping.json
-apt-get install python3-peewee python3-passlib python3-xmltodict python3-requests python3-msal python3-ldap3 -y
+apt-get install python3-peewee python3-passlib python3-xmltodict python3-requests python3-msal python3-cryptography python3-jwt python3-ldap3 python3-certifi -y
 ```
 
 
-If you are not under debian or if you do not have the packages available :
+Debian 13 provides compatible Python packages. On older Debian versions or other distributions, use a virtual environment when the packaged versions are insufficient:
 
 ```
-apt-get install python3-pip
-pip3 install -r /opt/sync-azure/requirements.txt
-pip3 install -r /opt/sync-azure/AADInternals_python/requirements.txt
+apt-get install -y python3-venv
+python3 -m venv --system-site-packages /opt/sync-azure/.venv
+/opt/sync-azure/.venv/bin/python -m pip install -r /opt/sync-azure/requirements.txt
+/opt/sync-azure/.venv/bin/python -m pip install -r /opt/sync-azure/AADInternals_python/requirements.txt
 ```
 
- - Configure /etc/azureconf/azure.conf
-   
+ - Configure /etc/azureconf/azure.conf (`tenant_id` and, optionally, `entra_aba_dir`). The first run may require interactive Entra administrator authentication to provision the certificate identity. Keep the PFX directory secure and persistent.
+
+ - Initialize both Git submodules (`AADInternals_python` and its nested `python_wcfbin`).
+
 You can try like this:
 
 python3 /opt/sync-azure/run_sync.py
+
+If using a virtual environment, use `/opt/sync-azure/.venv/bin/python` instead of `python3`.
 
 The script sends all users and groups a first time and then only sends what has been modified since the last send during the next launch.
 
@@ -73,7 +78,7 @@ Other settings
 | dbpath                                 | /root/last_send_azuread.db           | the last data sent is stored there.                                                                                                                                                   |
 | proxy                                  | 192.168.1.2:3128                     | define the proxy to use                                                                                                                                                               |
 | tenant_id                              | 6121018c-f311-9999-9999-ec17bba6e422 | indicate the tenant_id here                                                                                                                                                           |
-| credential_cache_file                  | /root/last_token_azuread.json        | indicates the path to the credentials cache                                                                                                                                           |
+| entra_aba_dir                         | /root/entra_aba                      | Persistent directory for the Entra certificate identity (PFX); replaces the old token cache                                                                                           |
 | calculate_deletions_based_on_last_sync | False                                | allows you not to retrieve the list of users and groups from Azure, thereby limiting the number of requests to Azure , Can only be triggered after a first successful synchronization |
 
 sourceanchor

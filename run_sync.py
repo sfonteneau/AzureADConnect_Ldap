@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import datetime
 import sys
@@ -88,14 +89,11 @@ def run_sync(force=False,from_db=False):
     if config.has_option('common', 'tenant_id'):
         azure.tenant_id = config.get('common', 'tenant_id')
 
-    if config.has_option('common', 'save_to_cache'):
-        azure.save_to_cache = config.getboolean('common', 'save_to_cache')
+    if config.has_option('common', 'domain'):
+        azure.domain = config.get('common', 'domain')
 
-    if config.has_option('common', 'use_cache'):
-        azure.use_cache = config.getboolean('common', 'use_cache')  
-
-    if config.has_option('common', 'credential_cache_file'):
-        azure.cache_file = config.get('common', 'credential_cache_file')
+    if config.has_option('common', 'entra_aba_dir'):
+        azure.entra_aba_dir = config.get('common', 'entra_aba_dir')
 
     if config.get('common', 'proxy'):
         azure.proxiesconf = {'http':config.get('common', 'proxy'),'https':config.get('common','proxy')}
@@ -136,9 +134,6 @@ def run_sync(force=False,from_db=False):
 
 
     smb.dry_run = dry_run
-
-    if azure.use_cache:
-        azure.connect()
 
     if not AzureObject.table_exists():
         # enable ad sync

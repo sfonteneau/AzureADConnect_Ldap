@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import os
 import ssl
 import struct
@@ -8,7 +8,7 @@ import json
 import datetime
 from ldap3 import Server, Connection, Tls, ALL_ATTRIBUTES
 from certifi import core
-from AADInternals_python.AADInternals import AADInternals
+from AADInternals_python.AADInternals import AADInternals, SYNC_SCOPE
 from passlib.hash import nthash
 
 logging.getLogger("adal-python").setLevel(logging.WARN)
@@ -51,14 +51,10 @@ class AdConnect():
 
     def __init__(self):
 
-
         self.proxiesconf = None
-
-
-        self.tenant_id= None
-        self.save_to_cache=True
-        self.use_cache = True
-        self.cache_file = os.path.join(os.path.dirname(os.path.realpath(__file__)),'last_token.json')
+        self.tenant_id = None
+        self.domain = None
+        self.entra_aba_dir = "/root/entra_aba"
 
         self.dry_run=True
         self.use_get_syncobjects = True
@@ -69,14 +65,14 @@ class AdConnect():
 
     def connect(self):
         if not self.az:
-            self.az = AADInternals(proxies=self.proxiesconf,
-                                   use_cache=self.use_cache,
-                                   save_to_cache=self.save_to_cache,
-                                   tenant_id=self.tenant_id,
-                                   cache_file=self.cache_file,
-                                   verify=self.verify)
-            self.tenant_id = self.az.tenant_id
-            self.az.get_token(scopes=["https://graph.windows.net/.default"])
+            az = AADInternals(proxies=self.proxiesconf,
+                              tenant_id=self.tenant_id,
+                              domain=self.domain,
+                              entra_aba_dir=self.entra_aba_dir,
+                              verify=self.verify)
+            az.get_token(scopes=[SYNC_SCOPE])
+            self.tenant_id = az.tenant_id
+            self.az = az
 
     def enable_ad_sync(self):
         self.connect()
@@ -95,10 +91,12 @@ class AdConnect():
 
     def delete_user(self,entry):
         if not self.dry_run:
+            self.connect()
             self.az.remove_azureadoject(sourceanchor=entry,objecttype='User')
 
     def delete_group(self,entry):
         if not self.dry_run:
+            self.connect()
             self.az.remove_azureadoject(sourceanchor=entry,objecttype='Group')
 
     def generate_all_dict(self):
@@ -117,7 +115,7 @@ class AdConnect():
             return
 
         try:
-            list_groups = self.az.list_groups(select="onPremisesImmutableId,userPrincipalName,id")
+            list_groups = self.az.list_groups(include_immutable_id=True, select="id")
         except Exception as e:
             if 'Identity synchronization is not yet activated for this company' in str(e):
                 list_groups = []
