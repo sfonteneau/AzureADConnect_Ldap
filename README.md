@@ -28,7 +28,7 @@ python3 -m venv --system-site-packages /opt/sync-azure/.venv
 
 You can try like this:
 
-python3 /opt/sync-azure/run_sync.py
+/opt/sync-azure/run_sync.sh
 
 If using a virtual environment, use `/opt/sync-azure/.venv/bin/python` instead of `python3`.
 
